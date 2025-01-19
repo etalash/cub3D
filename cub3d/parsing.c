@@ -6,11 +6,35 @@
 /*   By: stalash <stalash@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:36:56 by stalash           #+#    #+#             */
-/*   Updated: 2025/01/17 07:43:49 by stalash          ###   ########.fr       */
+/*   Updated: 2025/01/19 11:53:30 by stalash          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+void	print_debug(t_map *map)
+{
+	int	i;
+
+	i = 0;
+	printf("---------------------------------------\n");
+	printf("north_tx: %s\n", map->nord);
+	printf("south_tx: %s\n", map->south);
+	printf("west_tx: %s\n", map->west);
+	printf("east_tx: %s\n", map->east);
+	printf("floor_color: %u\n", map->floor_color);
+	printf("ceiling_color: %u\n", map->ceiling_color);
+	printf("height: %d\n", map->m_h);
+	printf("player_x: %d, player_y: %d\n", map->p_x, map->p_y);
+	printf("p: %c\n", map->p_p);
+	while (i < MAP_HEIGHT && map->map_cub[i])
+	{
+		printf("%s\n", map->map_cub[i]);
+		i++;
+	}
+	printf("---------------------------------------\n");
+}
+
 
 int	setup_map_storage(t_data data)
 {
@@ -38,44 +62,44 @@ int	setup_map_storage(t_data data)
 	return (0);
 }
 
-int valid_map_name(char **argv)
+int	valid_map_name(char *argv)
 {
-	int len;
+	int	len;
 
 	len = 0;
-	printf("%s\n", argv[1]);
-	if (argv == NULL)
-		return (1);
-	printf("we are here \n");
-	len = ft_strlen(argv[1]);
+	while(argv[len])
+		len++;
 	if (len < 4)
 		return (1);
-	if (len >= 4)
-	{
-		if (ft_strchr((argv[1] + (len - 4)), '.') == NULL)
-			return (1);
-		else if (ft_strchr((argv[1] + (len - 3)), 'c') == NULL)
-			return (1);
-		else if (ft_strchr((argv[1] + (len - 2)), 'u') == NULL)
-			return (1);
-		else if (ft_strchr((argv[1] + (len - 1)), 'b') == NULL)
-			return (1);
-	}
+	if (ft_strchr((argv + (len - 4)), '.') == 0)
+		return (1);
+	else if (ft_strchr((argv + (len - 3)), 'c') == 0)
+		return (1);
+	else if (ft_strchr((argv + (len - 2)), 'u') == 0)
+		return (1);
+	else if (ft_strchr((argv + (len - 1)), 'b') == 0)
+		return (1);
 	return (0);
 }
 
-void	parsing(char **argv, t_data data)
+void	parsing(char *argv, t_data data)
 {
 	int		fd;
 	char	*map_colors;
 
 	if (valid_map_name(argv) == 1)
 		return (printf("Map's name is invalid\n"), exit (1));
-	fd = open(argv[1], O_RDONLY);
+	fd = open(argv, O_RDONLY);
 	if (fd <= 0)
 		return(printf("can't open the given map\n"), exit (1));
 	if (setup_map_storage(data) == 1)
 		return (close (fd), exit (1));
 	if ((map_colors = retrieve_texture_and_color(fd, data)) == NULL)
 		return (deallocate_map(data), close(fd) ,exit(1));
+	if (retrieve_map_data(fd, data, map_colors) == NULL)
+		return (deallocate_map(data), close(fd) ,exit(1));
+	close(fd);
+	if (valid_map(data) == 1);
+		return (deallocate_map(data) ,exit(1));
+	print_debug(data.map);
 }

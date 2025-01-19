@@ -6,7 +6,7 @@
 /*   By: stalash <stalash@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 13:46:41 by stalash           #+#    #+#             */
-/*   Updated: 2025/01/17 07:51:41 by stalash          ###   ########.fr       */
+/*   Updated: 2025/01/19 11:41:19 by stalash          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,21 +53,26 @@ typedef struct s_map
 	char			**map_cub; // map of cub3d
 	int				m_h; // map height
 	int				m_w; // map wide
+	char			p_p; // player position
 	unsigned int	floor_color;
 	unsigned int	ceiling_color;
+
 }	t_map;
 
 typedef struct s_data
 {
+	mlx_t		*mlx;
 	t_player	*player;
 	t_map		*map;
-	mlx_t		*mlx;
 	
 }	t_data;
 
-void	parsing(char **argv, t_data data);
+void	parsing(char *argv, t_data data);
 char	*retrieve_texture_and_color(int fd, t_data	data);
 int		process_map_line(char *line, t_data data);
+char 	*refrctoring_line(int fd);
+char	*retrieve_map_data(int fd, t_data data, char *map_colors);
+int		valid_map(t_data data);
 
 // ********** free ***********
 void	deallocate_map(t_data data);

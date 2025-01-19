@@ -6,7 +6,7 @@
 /*   By: stalash <stalash@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 14:04:33 by stalash           #+#    #+#             */
-/*   Updated: 2025/01/17 07:41:27 by stalash          ###   ########.fr       */
+/*   Updated: 2025/01/16 16:48:01 by stalash          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,8 @@ int	main(int argc, char **argv)
 
 	t_data	data;
 
-	if (argc != 2 || !argv[1][0])
-		return (0);
+    (void)argc;
 	init_map(data);
-	parsing(argv, data);
-	return (0);
+	parsing(argv[1], data);
+
 }

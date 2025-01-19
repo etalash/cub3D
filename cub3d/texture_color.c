@@ -6,7 +6,7 @@
 /*   By: stalash <stalash@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 17:28:17 by stalash           #+#    #+#             */
-/*   Updated: 2025/01/16 17:28:35 by stalash          ###   ########.fr       */
+/*   Updated: 2025/01/19 11:51:38 by stalash          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,13 +58,12 @@ char *refrctoring_line(int fd)
 	{
 		if (!(line = get_next_line(fd)))
 			return (NULL);
-		if (!(refrctored_line = remove_whitespace(line)))
-			return (free(line), NULL);
+		if (!(refrctored_line = remove_whitespace(line)) \
+			|| refrctored_line[0] == '\0')
+			return (printf("Empty Line in the function\n"),\
+					 free(line), NULL);
 		else
-		{
-			free(line);
-			return (refrctored_line);
-		}
+			return (free(line), refrctored_line);
 	}
 }
 
@@ -90,5 +89,5 @@ char	*retrieve_texture_and_color(int fd, t_data	data)
 		free(colors);
 	}
 	printf("ERROR : Provided map data is invalid\n");
-	return (deallocate_map(data), free(colors), NULL);
+	return (free(colors), NULL);
 }
