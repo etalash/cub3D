@@ -6,7 +6,7 @@
 /*   By: stalash <stalash@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 18:17:01 by stalash           #+#    #+#             */
-/*   Updated: 2025/01/16 16:32:41 by stalash          ###   ########.fr       */
+/*   Updated: 2025/01/20 18:23:23 by stalash          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	deallocate_map(t_data data)
 	i = 0;
 	if (data.map->map_cub[i])
 	{
-		while(i < MAP_HEIGHT)
+		while (i < MAP_HEIGHT)
 		{
 			if (data.map->map_cub[i])
 			{

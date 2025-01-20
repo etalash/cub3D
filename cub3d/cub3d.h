@@ -6,19 +6,19 @@
 /*   By: stalash <stalash@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 13:46:41 by stalash           #+#    #+#             */
-/*   Updated: 2025/01/19 11:41:19 by stalash          ###   ########.fr       */
+/*   Updated: 2025/01/20 19:42:14 by stalash          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CUB3D_H
-# define CUB3D_h
+# define CUB3D_H
 
 # include <stdio.h>
 # include <string.h>
 # include <limits.h>
 # include <math.h>
 # include <unistd.h>
-# include "lib/MLX42/include/MLX42/MLX42.h"
+// # include "lib/MLX42/include/MLX42/MLX42.h"
 # include "lib/libft/libft.h"
 # include "lib/ft_printf/ft_printf.h"
 
@@ -36,7 +36,7 @@
 
 typedef struct s_player
 {
-    int	x_p;
+	int	x_p;
 	int	y_p;
 }	t_player;
 
@@ -61,22 +61,20 @@ typedef struct s_map
 
 typedef struct s_data
 {
-	mlx_t		*mlx;
+	// mlx_t		*mlx;
 	t_player	*player;
 	t_map		*map;
-	
 }	t_data;
 
 void	parsing(char *argv, t_data data);
 char	*retrieve_texture_and_color(int fd, t_data	data);
 int		process_map_line(char *line, t_data data);
-char 	*refrctoring_line(int fd);
+char	*refrctoring_line(int fd);
 char	*retrieve_map_data(int fd, t_data data, char *map_colors);
 int		valid_map(t_data data);
 
 // ********** free ***********
 void	deallocate_map(t_data data);
 void	free_tokens(char **tokens);
-
 
 #endif

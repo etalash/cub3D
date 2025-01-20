@@ -6,35 +6,11 @@
 /*   By: stalash <stalash@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:36:56 by stalash           #+#    #+#             */
-/*   Updated: 2025/01/19 11:53:30 by stalash          ###   ########.fr       */
+/*   Updated: 2025/01/20 19:52:29 by stalash          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
-void	print_debug(t_map *map)
-{
-	int	i;
-
-	i = 0;
-	printf("---------------------------------------\n");
-	printf("north_tx: %s\n", map->nord);
-	printf("south_tx: %s\n", map->south);
-	printf("west_tx: %s\n", map->west);
-	printf("east_tx: %s\n", map->east);
-	printf("floor_color: %u\n", map->floor_color);
-	printf("ceiling_color: %u\n", map->ceiling_color);
-	printf("height: %d\n", map->m_h);
-	printf("player_x: %d, player_y: %d\n", map->p_x, map->p_y);
-	printf("p: %c\n", map->p_p);
-	while (i < MAP_HEIGHT && map->map_cub[i])
-	{
-		printf("%s\n", map->map_cub[i]);
-		i++;
-	}
-	printf("---------------------------------------\n");
-}
-
 
 int	setup_map_storage(t_data data)
 {
@@ -51,12 +27,12 @@ int	setup_map_storage(t_data data)
 	while (data.map->map_cub[++i])
 	{
 		data.map->map_cub[i] = (char *)ft_calloc(MAP_WIDE, sizeof(char));
-			if (!data.map->map_cub[i])
-			{
-				printf("allocation failure\n");
-				deallocate_map(data);
-				return (1);
-			}
+		if (!data.map->map_cub[i])
+		{
+			printf("allocation failure\n");
+			deallocate_map(data);
+			return (1);
+		}
 		ft_memset(data.map->map_cub[i], '\0', MAP_WIDE);
 	}
 	return (0);
@@ -67,7 +43,7 @@ int	valid_map_name(char *argv)
 	int	len;
 
 	len = 0;
-	while(argv[len])
+	while (argv[len])
 		len++;
 	if (len < 4)
 		return (1);
@@ -91,15 +67,15 @@ void	parsing(char *argv, t_data data)
 		return (printf("Map's name is invalid\n"), exit (1));
 	fd = open(argv, O_RDONLY);
 	if (fd <= 0)
-		return(printf("can't open the given map\n"), exit (1));
+		return (printf("can't open the given map\n"), exit (1));
 	if (setup_map_storage(data) == 1)
 		return (close (fd), exit (1));
-	if ((map_colors = retrieve_texture_and_color(fd, data)) == NULL)
-		return (deallocate_map(data), close(fd) ,exit(1));
+	map_colors = retrieve_texture_and_color(fd, data);
+	if (map_colors == NULL)
+		return (deallocate_map(data), close(fd), exit(1));
 	if (retrieve_map_data(fd, data, map_colors) == NULL)
-		return (deallocate_map(data), close(fd) ,exit(1));
+		return (deallocate_map(data), close(fd), exit(1));
 	close(fd);
-	if (valid_map(data) == 1);
-		return (deallocate_map(data) ,exit(1));
-	print_debug(data.map);
+	if (valid_map(data) == 1)
+		return (deallocate_map(data), exit(1));
 }

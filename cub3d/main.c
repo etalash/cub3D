@@ -6,36 +6,39 @@
 /*   By: stalash <stalash@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 14:04:33 by stalash           #+#    #+#             */
-/*   Updated: 2025/01/16 16:48:01 by stalash          ###   ########.fr       */
+/*   Updated: 2025/01/20 19:43:22 by stalash          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void	init_map(t_data data)
+void	init_map(t_map *map)
 {
-	data.map->nord = NULL;
-	data.map->south = NULL;
-	data.map->east = NULL;
-	data.map->west = NULL;
-	data.map->res_w = RES_X;
-	data.map->res_h = RES_Y;
-	data.map->p_x = 0;
-	data.map->p_y = 0;
-	data.map->map_cub = NULL;
-	data.map->m_h = MAP_HEIGHT;
-	data.map->m_w = MAP_WIDE;
-	data.map->floor_color = 0x000000;
-	data.map->ceiling_color = 0x000000;
+	map->nord = NULL;
+	map->south = NULL;
+	map->east = NULL;
+	map->west = NULL;
+	map->res_w = RES_X;
+	map->res_h = RES_Y;
+	map->p_x = 0;
+	map->p_y = 0;
+	map->map_cub = NULL;
+	map->m_h = 0;
+	map->m_w = 0;
+	map->p_p = '0';
+	map->floor_color = 0xFFFFFF;
+	map->ceiling_color = 0xFFFFFF;
 }
 
 int	main(int argc, char **argv)
 {
-
+	t_map	map;
 	t_data	data;
 
-    (void)argc;
-	init_map(data);
+	if (argc != 2 || !argv[1][0])
+		return (printf("ERROR : Not enough arguments\n"), 0);
+	init_map(&map);
+	data.map = &map;
 	parsing(argv[1], data);
-
+	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: stalash <stalash@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 08:18:24 by stalash           #+#    #+#             */
-/*   Updated: 2025/01/19 11:52:29 by stalash          ###   ########.fr       */
+/*   Updated: 2025/01/20 19:45:06 by stalash          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ bool	is_valid_map_char(char c)
 int	refrctoring_map_data(t_data data, char *map_colors)
 {
 	int		i;
-	int 	j;
+	int		j;
 	char	current_char;
 
 	i = 0;
@@ -49,15 +49,16 @@ char	*retrieve_map_data(int fd, t_data data, char *map_colors)
 {
 	char	*map_data;
 
-	if(refrctoring_map_data(data, map_colors) == 1)
+	if (refrctoring_map_data(data, map_colors) == 1)
 		return (free(map_colors), NULL);
 	free(map_colors);
 	while (1)
 	{
 		++(data.map->m_h);
-		if ((map_data = refrctoring_line(fd)) == NULL)
+		map_data = refrctoring_line(fd);
+		if (map_data == NULL)
 			break ;
-		if(refrctoring_map_data(data, map_data) == 1)
+		if (refrctoring_map_data(data, map_data) == 1)
 			return (free(map_data), NULL);
 	}
 	return (free(map_data), NULL);

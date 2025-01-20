@@ -6,7 +6,7 @@
 /*   By: stalash <stalash@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 17:28:17 by stalash           #+#    #+#             */
-/*   Updated: 2025/01/19 11:51:38 by stalash          ###   ########.fr       */
+/*   Updated: 2025/01/20 19:53:38 by stalash          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,23 +45,24 @@ char	*remove_whitespace(char *line)
 		return (NULL);
 	retrieved_line = ft_strndup(line + i, length);
 	if (retrieved_line == NULL)
-		return NULL;
+		return (NULL);
 	return (retrieved_line);
 }
 
-char *refrctoring_line(int fd)
+char	*refrctoring_line(int fd)
 {
 	char	*line;
 	char	*refrctored_line;
 
 	while (1)
 	{
-		if (!(line = get_next_line(fd)))
+		line = get_next_line(fd);
+		if (!line)
 			return (NULL);
-		if (!(refrctored_line = remove_whitespace(line)) \
-			|| refrctored_line[0] == '\0')
-			return (printf("Empty Line in the function\n"),\
-					 free(line), NULL);
+		refrctored_line = remove_whitespace(line);
+		if (!refrctored_line || refrctored_line[0] == '\0')
+			return (printf("Empty Line in the function\n"), \
+					free(line), NULL);
 		else
 			return (free(line), refrctored_line);
 	}
@@ -75,11 +76,13 @@ char	*retrieve_texture_and_color(int fd, t_data	data)
 	result = 0;
 	while (1)
 	{
-		if (!(colors = refrctoring_line(fd)))
+		colors = refrctoring_line(fd);
+		if (!colors)
 			break ;
-		if (result = process_map_line(colors, data) == -1)
+		result = process_map_line(colors, data);
+		if (result == -1)
 			break ;
-		else if(result == 1)
+		else if (result == 1)
 		{
 			if (check_map_line(data) == -1)
 				break ;
@@ -89,5 +92,5 @@ char	*retrieve_texture_and_color(int fd, t_data	data)
 		free(colors);
 	}
 	printf("ERROR : Provided map data is invalid\n");
-	return (free(colors), NULL);
+	return (NULL);
 }
