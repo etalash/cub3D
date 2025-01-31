@@ -6,11 +6,11 @@
 /*   By: stalash <stalash@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 17:28:17 by stalash           #+#    #+#             */
-/*   Updated: 2025/01/20 19:53:38 by stalash          ###   ########.fr       */
+/*   Updated: 2025/01/31 13:39:33 by stalash          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "../cub3d.h"
 
 int	check_map_line(t_data data)
 {

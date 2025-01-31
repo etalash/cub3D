@@ -6,11 +6,11 @@
 /*   By: stalash <stalash@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 18:17:01 by stalash           #+#    #+#             */
-/*   Updated: 2025/01/20 18:23:23 by stalash          ###   ########.fr       */
+/*   Updated: 2025/01/31 13:39:06 by stalash          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "../cub3d.h"
 
 void	free_tokens(char **tokens)
 {

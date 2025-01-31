@@ -6,11 +6,11 @@
 /*   By: stalash <stalash@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 08:18:24 by stalash           #+#    #+#             */
-/*   Updated: 2025/01/20 19:45:06 by stalash          ###   ########.fr       */
+/*   Updated: 2025/01/31 13:39:17 by stalash          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "../cub3d.h"
 
 bool	is_valid_map_char(char c)
 {

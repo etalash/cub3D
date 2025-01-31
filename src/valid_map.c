@@ -6,11 +6,11 @@
 /*   By: stalash <stalash@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 09:53:54 by stalash           #+#    #+#             */
-/*   Updated: 2025/01/20 19:41:46 by stalash          ###   ########.fr       */
+/*   Updated: 2025/01/31 13:42:01 by stalash          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "../cub3d.h"
 
 int	cheak_player(t_data data, int map_height, int map_wide, \
 				char **map)
@@ -52,14 +52,14 @@ int	cheak_walls(t_data data, int map_height, int map_wide)
 	while (++i < map_height)
 	{
 		if (data.map->map_cub[i][0] != '1' \
-			|| ft_strlen(data.map->map_cub[i]) > 0 \
+			|| (ft_strlen(data.map->map_cub[i]) > 0 \
 			&& data.map->map_cub[i][ft_strlen \
-			(data.map->map_cub[i]) - 1] != '1')
+			(data.map->map_cub[i]) - 1] != '1'))
 			return (0);
 	}
 	while (++j < map_wide)
 	{
-		if (ft_strlen(data.map->map_cub[0]) > j \
+		if (ft_strlen(data.map->map_cub[0]) > (size_t)j \
 			&& (data.map->map_cub[0][j] != '1' \
 			|| data.map->map_cub[map_height - 1] \
 			[j] != '1'))
@@ -72,15 +72,13 @@ int	valid_map(t_data data)
 {
 	int		i;
 	int		map_wide;
-	int		j;
 	char	**map;
 
 	i = -1;
-	j = 0;
 	map = data.map->map_cub;
 	map_wide = 0;
 	while (++i < MAP_HEIGHT)
-		if (ft_strlen(data.map->map_cub[i]) > map_wide)
+		if (ft_strlen(data.map->map_cub[i]) > (size_t)map_wide)
 			map_wide = ft_strlen(data.map->map_cub[i]);
 	if (!cheak_walls(data, data.map->m_h, map_wide))
 		return (printf("ERROR : Map data is invalid\n"), 1);

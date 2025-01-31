@@ -6,11 +6,11 @@
 /*   By: stalash <stalash@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 17:29:41 by stalash           #+#    #+#             */
-/*   Updated: 2025/01/20 19:48:05 by stalash          ###   ########.fr       */
+/*   Updated: 2025/01/31 13:40:41 by stalash          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "../cub3d.h"
 
 int	count_tokens(char **tokens)
 {
@@ -29,12 +29,10 @@ int	count_tokens(char **tokens)
 unsigned int	set_color(char *line)
 {
 	char	**tokens;
-	int		i;
 	int		red;
 	int		green;
 	int		bule;
 
-	i = 0;
 	tokens = ft_split(line, ',');
 	if (!tokens)
 		return (free(tokens), -1);

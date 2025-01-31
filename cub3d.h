@@ -6,7 +6,7 @@
 /*   By: stalash <stalash@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 13:46:41 by stalash           #+#    #+#             */
-/*   Updated: 2025/01/20 19:42:14 by stalash          ###   ########.fr       */
+/*   Updated: 2025/01/31 14:06:42 by stalash          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,9 @@
 # include <limits.h>
 # include <math.h>
 # include <unistd.h>
-// # include "lib/MLX42/include/MLX42/MLX42.h"
 # include "lib/libft/libft.h"
 # include "lib/ft_printf/ft_printf.h"
+// # include "lib/MLX42/include/MLX42/MLX42.h"
 
 // ******** 4K *********
 # define RES_X 3840
