@@ -6,31 +6,31 @@
 /*   By: stalash <stalash@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 17:28:17 by stalash           #+#    #+#             */
-/*   Updated: 2025/01/31 13:39:33 by stalash          ###   ########.fr       */
+/*   Updated: 2025/02/08 22:57:19 by stalash          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../cub3d.h"
 
-int	check_map_line(t_data data)
+int check_map_line(t_data data)
 {
-	if (!data.map->nord || !data.map->south \
-		|| !data.map->east || !data.map->west)
-		return (-1);
-	if (data.map->floor_color == 0x000000 \
-		|| data.map->ceiling_color == 0x000000 \
-		|| data.map->floor_color == 0xFFFFFFFF \
-		|| data.map->ceiling_color == 0xFFFFFFFF)
-		return (-1);
+	int i, j;
+
+	for (i = 0; i < data.map->m_h; i++)
+	{
+		for (j = 0; j < data.map->m_w; j++)
+		{
+			if (!is_valid_map_char(data.map->map_cub[i][j]))
+				return (printf("Invalid character in map at (%d, %d)\n", i, j), -1);
+		}
+	}
 	return (0);
 }
 
-char	*remove_whitespace(char *line)
+char *remove_whitespace(char *line)
 {
-	int		i;
-	int		len;
-	char	*retrieved_line;
-	int		length;
+	int i, len, length;
+	char *retrieved_line;
 
 	i = 0;
 	if (line == NULL)
@@ -40,7 +40,7 @@ char	*remove_whitespace(char *line)
 		i++;
 	while (len >= i && ft_is_whitespace(line[len]))
 		len--;
-	length = len - i + 1;
+	length = len - i;
 	if (length <= 0)
 		return (NULL);
 	retrieved_line = ft_strndup(line + i, length);
@@ -49,10 +49,10 @@ char	*remove_whitespace(char *line)
 	return (retrieved_line);
 }
 
-char	*refrctoring_line(int fd)
+char *refrctoring_line(int fd)
 {
-	char	*line;
-	char	*refrctored_line;
+	char *line;
+	char *refrctored_line;
 
 	while (1)
 	{
@@ -60,32 +60,43 @@ char	*refrctoring_line(int fd)
 		if (!line)
 			return (NULL);
 		refrctored_line = remove_whitespace(line);
-		if (!refrctored_line || refrctored_line[0] == '\0')
-			return (printf("Empty Line in the function\n"), \
-					free(line), NULL);
-		else
-			return (free(line), refrctored_line);
+		free(line);
+		if (!refrctored_line || *refrctored_line == '\0')
+		{
+			printf("Empty Line in the function\n");
+			free(refrctored_line);
+			return (NULL);
+		}
+		return (refrctored_line);
 	}
 }
 
-char	*retrieve_texture_and_color(int fd, t_data	data)
+char *retrieve_texture_and_color(int fd, t_data data)
 {
-	char	*colors;
-	int		result;
+	char *colors;
+	int result;
 
 	result = 0;
 	while (1)
 	{
 		colors = refrctoring_line(fd);
 		if (!colors)
-			break ;
+			break;
 		result = process_map_line(colors, data);
 		if (result == -1)
-			break ;
+		{
+			free(colors);
+			printf("ERROR : Invalid texture path or color format.\n");
+			break;
+		}
 		else if (result == 1)
 		{
 			if (check_map_line(data) == -1)
-				break ;
+			{
+				free(colors);
+				printf("ERROR : Invalid map line.\n");
+				break;
+			}
 			else
 				return (colors);
 		}

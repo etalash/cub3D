@@ -6,13 +6,13 @@
 #    By: stalash <stalash@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/31 13:17:27 by stalash           #+#    #+#              #
-#    Updated: 2025/01/31 14:12:21 by stalash          ###   ########.fr        #
+#    Updated: 2025/02/08 17:45:20 by stalash          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME        =   cub3D
 CC          =   cc
-CFLAGS      =   -Wall -Werror -Wextra -std=c99
+CFLAGS      =   -Wall -Werror -Wextra -std=c99 -g3 -fsanitize=address
 
 # directories
 SRC_DIR      =  src/

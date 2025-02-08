@@ -6,7 +6,7 @@
 /*   By: stalash <stalash@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 13:46:41 by stalash           #+#    #+#             */
-/*   Updated: 2025/01/31 14:06:42 by stalash          ###   ########.fr       */
+/*   Updated: 2025/02/08 21:43:54 by stalash          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,12 +66,14 @@ typedef struct s_data
 	t_map		*map;
 }	t_data;
 
-void	parsing(char *argv, t_data data);
+void	parsing(char *argv, t_data *data);
 char	*retrieve_texture_and_color(int fd, t_data	data);
 int		process_map_line(char *line, t_data data);
 char	*refrctoring_line(int fd);
-char	*retrieve_map_data(int fd, t_data data, char *map_colors);
+// char	*retrieve_map_data(int fd, t_data data, char *map_colors);
+int		retrieve_map_data(int fd, t_data data, char *map_colors);
 int		valid_map(t_data data);
+bool	is_valid_map_char(char c);
 
 // ********** free ***********
 void	deallocate_map(t_data data);
