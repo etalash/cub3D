@@ -6,7 +6,7 @@
 /*   By: stalash <stalash@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 08:18:24 by stalash           #+#    #+#             */
-/*   Updated: 2025/02/08 22:58:44 by stalash          ###   ########.fr       */
+/*   Updated: 2025/02/12 10:45:08 by stalash          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 bool is_valid_map_char(char c)
 {
-	return (c == ' ' || c == '0' || c == '1' || c == 'N' || c == 'S' || c == 'E' || c == 'W' || c == '\n');
+	return (c == ' ' || c == '0' || c == '1' || c == 'N' \
+		|| c == 'S' || c == 'E' || c == 'W' || c == '\n');
 }
 
 int refrctoring_map_data(t_data data, char *map_colors)
@@ -57,7 +58,7 @@ int retrieve_map_data(int fd, t_data data, char *map_colors)
 			break;
 		if (refrctoring_map_data(data, map_data) == 1)
 			return (free(map_data), 1);
-		free(map_data); // Free map_data after processing
+		free(map_data);
 	}
 	return (0);
 }

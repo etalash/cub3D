@@ -6,7 +6,7 @@
 /*   By: stalash <stalash@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 17:28:17 by stalash           #+#    #+#             */
-/*   Updated: 2025/02/08 22:57:19 by stalash          ###   ########.fr       */
+/*   Updated: 2025/02/12 10:38:46 by stalash          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ char *remove_whitespace(char *line)
 		i++;
 	while (len >= i && ft_is_whitespace(line[len]))
 		len--;
+	len++;
 	length = len - i;
 	if (length <= 0)
 		return (NULL);
@@ -87,7 +88,7 @@ char *retrieve_texture_and_color(int fd, t_data data)
 		{
 			free(colors);
 			printf("ERROR : Invalid texture path or color format.\n");
-			break;
+			break ;
 		}
 		else if (result == 1)
 		{

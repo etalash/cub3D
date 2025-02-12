@@ -6,7 +6,7 @@
 /*   By: stalash <stalash@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 14:04:33 by stalash           #+#    #+#             */
-/*   Updated: 2025/02/08 22:56:52 by stalash          ###   ########.fr       */
+/*   Updated: 2025/02/12 10:25:07 by stalash          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,5 +40,6 @@ int main(int argc, char **argv)
 	init_map(&map);
 	data.map = &map;
 	parsing(argv[1], &data);
+	deallocate_map(&data);
 	return (0);
 }

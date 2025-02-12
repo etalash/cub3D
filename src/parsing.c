@@ -6,11 +6,31 @@
 /*   By: stalash <stalash@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:36:56 by stalash           #+#    #+#             */
-/*   Updated: 2025/02/08 22:57:06 by stalash          ###   ########.fr       */
+/*   Updated: 2025/02/12 10:42:17 by stalash          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../cub3d.h"
+
+void	debug(t_data *data)
+{
+	int i = 0, j = 0;
+	printf("Nord: %s\n", data->map->nord);
+	printf("south: %s\n", data->map->south);
+	printf("east: %s\n", data->map->east);
+	printf("west: %s\n", data->map->west);
+	while (i < data->map->m_h)
+	{
+		while (data->map->map_cub[i][j])
+		{
+			printf("%c", data->map->map_cub[i][j]);
+			j++;
+		}
+		j = 0;
+		printf("\n");
+		i++;
+	}
+}
 
 int setup_map_storage(t_data data)
 {
@@ -20,16 +40,16 @@ int setup_map_storage(t_data data)
 	if (!data.map->map_cub)
 	{
 		printf("allocation failure\n");
-		deallocate_map(data);
+		deallocate_map(&data);
 		return (1);
 	}
-	for (i = 0; i < MAP_HEIGHT; i++)
+	for (i = 0; i < MAP_HEIGHT_F; i++)
 	{
 		data.map->map_cub[i] = (char *)ft_calloc(MAP_WIDE, sizeof(char));
 		if (!data.map->map_cub[i])
 		{
 			printf("allocation failure\n");
-			deallocate_map(data);
+			deallocate_map(&data);
 			return (1);
 		}
 		ft_memset(data.map->map_cub[i], '\0', MAP_WIDE);
@@ -71,26 +91,12 @@ void parsing(char *argv, t_data *data)
 		return (close(fd), exit(1));
 	map_colors = retrieve_texture_and_color(fd, *data);
 	if (map_colors == NULL)
-		return (deallocate_map(*data), close(fd), exit(1));
+		return (deallocate_map(data), close(fd), exit(1));
 	if (retrieve_map_data(fd, *data, map_colors) != 0)
-		return (deallocate_map(*data), close(fd), exit(1));
+		return (deallocate_map(data), close(fd), exit(1));
 	close(fd);
-
-	// Print the map data
-	int i = 0, j = 0;
-	while (i < data->map->m_h)
-	{
-		while (data->map->map_cub[i][j])
-		{
-			printf("%c", data->map->map_cub[i][j]);
-			j++;
-		}
-		j = 0;
-		printf("\n");
-		i++;
-	}
-
+	debug(data);	// Debug print
 	if (valid_map(*data) == 1)
-		return (deallocate_map(*data), exit(1));
+		return (deallocate_map(data), exit(1));
 	printf("Map data is valid\n"); // Debug print
 }

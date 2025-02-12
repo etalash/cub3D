@@ -6,7 +6,7 @@
 /*   By: stalash <stalash@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 09:53:54 by stalash           #+#    #+#             */
-/*   Updated: 2025/02/08 22:56:12 by stalash          ###   ########.fr       */
+/*   Updated: 2025/02/12 10:32:18 by stalash          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,18 +89,12 @@ int cheak_player(t_data data, int map_height, int map_wide, char **map)
 int flood_fill(char **map, int x, int y, int map_height, int map_wide)
 {
     if (x < 0 || x >= map_wide || y < 0 || y >= map_height)
-	{
-
-		printf("HERE ARE WE\n");
-        return (1); // Out of bounds
-	}
+        return (1);
     if (map[y][x] == '1' || map[y][x] == 'F')
-        return (0); // Wall or already filled
-    // if (map[y][x] == ' ')
-    //     return (1); // Space is not enclosed
-
-    map[y][x] = 'F'; // Mark as filled
-
+        return (0);
+    if (map[y][x] == ' ')
+        return (1);
+    map[y][x] = 'F';
     if (flood_fill(map, x + 1, y, map_height, map_wide) != 0)
         return (1);
     if (flood_fill(map, x - 1, y, map_height, map_wide) != 0)
@@ -109,7 +103,6 @@ int flood_fill(char **map, int x, int y, int map_height, int map_wide)
         return (1);
     if (flood_fill(map, x, y - 1, map_height, map_wide) != 0)
         return (1);
-
     return (0);
 }
 
@@ -122,7 +115,7 @@ int valid_map(t_data data)
     i = -1;
     map = data.map->map_cub;
     map_wide = 0;
-    while (++i < MAP_HEIGHT)
+    while (++i < MAP_HEIGHT_F)
         if (ft_strlen(data.map->map_cub[i]) > (size_t)map_wide)
             map_wide = ft_strlen(data.map->map_cub[i]);
     if (!cheak_player(data, data.map->m_h, map_wide, map))

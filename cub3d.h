@@ -6,7 +6,7 @@
 /*   By: stalash <stalash@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 13:46:41 by stalash           #+#    #+#             */
-/*   Updated: 2025/02/08 21:43:54 by stalash          ###   ########.fr       */
+/*   Updated: 2025/02/12 10:21:42 by stalash          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ int		valid_map(t_data data);
 bool	is_valid_map_char(char c);
 
 // ********** free ***********
-void	deallocate_map(t_data data);
+void	deallocate_map(t_data *data);
 void	free_tokens(char **tokens);
 
 #endif
