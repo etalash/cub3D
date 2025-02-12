@@ -6,7 +6,7 @@
 /*   By: stalash <stalash@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:36:56 by stalash           #+#    #+#             */
-/*   Updated: 2025/02/12 14:54:25 by stalash          ###   ########.fr       */
+/*   Updated: 2025/02/12 14:56:52 by stalash          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,23 +36,23 @@ int setup_map_storage(t_data data)
 {
 	int i;
 
-	data.map->map_cub = (char **)ft_calloc(MAP_HEIGHT_F, sizeof(char *));
+	data.map->map_cub = (char **)ft_calloc(MAP_HEIGHT, sizeof(char *));
 	if (!data.map->map_cub)
 	{
 		printf("allocation failure\n");
 		deallocate_map(&data);
 		return (1);
 	}
-	for (i = 0; i < MAP_HEIGHT_F; i++)
+	for (i = 0; i < MAP_HEIGHT; i++)
 	{
-		data.map->map_cub[i] = (char *)ft_calloc(MAP_WIDE_F, sizeof(char));
+		data.map->map_cub[i] = (char *)ft_calloc(MAP_WIDE, sizeof(char));
 		if (!data.map->map_cub[i])
 		{
 			printf("allocation failure\n");
 			deallocate_map(&data);
 			return (1);
 		}
-		ft_memset(data.map->map_cub[i], '\0', MAP_WIDE_F);
+		ft_memset(data.map->map_cub[i], '\0', MAP_WIDE);
 	}
 	return (0);
 }
