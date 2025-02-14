@@ -6,18 +6,19 @@
 #    By: maba <maba@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/31 13:17:27 by stalash           #+#    #+#              #
-#    Updated: 2025/02/13 01:15:43 by maba             ###   ########.fr        #
+#    Updated: 2025/02/14 18:17:04 by maba             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g3 -fsanitize=address
 
 NAME = cub3D
 SRC_DIR = src
-SRCS = $(SRC_DIR)/main.c $(SRC_DIR)/free.c $(SRC_DIR)/map_data.c \
-		$(SRC_DIR)/parsing.c $(SRC_DIR)/process_texture_color.c \
-		$(SRC_DIR)/texture_color.c $(SRC_DIR)/valid_map.c
+SRCS = $(SRC_DIR)/parse/main.c $(SRC_DIR)/parse/free.c $(SRC_DIR)/parse/map_data.c \
+		$(SRC_DIR)/parse/parsing.c $(SRC_DIR)/parse/process_texture_color.c \
+		$(SRC_DIR)/parse/texture_color.c $(SRC_DIR)/parse/valid_map.c $(SRC_DIR)/exec/init.c \
+		$(SRC_DIR)/exec/hooks.c
 OBJ = $(SRCS:.c=.o)
 
 MLX_HEADER = lib/MLX42/include/MLX42

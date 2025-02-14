@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stalash <stalash@student.42.fr>            +#+  +:+       +#+        */
+/*   By: maba <maba@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 13:46:41 by stalash           #+#    #+#             */
-/*   Updated: 2025/02/12 10:21:42 by stalash          ###   ########.fr       */
+/*   Updated: 2025/02/14 18:37:41 by maba             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@
 # include <unistd.h>
 # include "lib/libft/libft.h"
 # include "lib/ft_printf/ft_printf.h"
-// # include "lib/MLX42/include/MLX42/MLX42.h"
+# include "lib/MLX42/include/MLX42/MLX42.h"
+
 
 // ******** 4K *********
 # define RES_X 3840
@@ -61,7 +62,8 @@ typedef struct s_map
 
 typedef struct s_data
 {
-	// mlx_t		*mlx;
+	mlx_t		*mlx;
+	mlx_image_t	*win;
 	t_player	*player;
 	t_map		*map;
 }	t_data;
@@ -79,4 +81,33 @@ bool	is_valid_map_char(char c);
 void	deallocate_map(t_data *data);
 void	free_tokens(char **tokens);
 
+
+// ********** execution part ***********
+
+void init_map(t_map *map);
+
+void init_data(t_data *data, char *map_file);
+
+void load_map(t_data *data, char *map_file);
+
+void init_mlx(t_data *data);
+
+void error_exit(t_data *data, char *message);
+
+// int close_window(t_data *data);
+void close_window(void *param);
+
+void cleanup(t_data *data);
+
+// hook config
+void key_press(mlx_key_data_t keydata, void *param);
+
+void key_release(mlx_key_data_t keydata, void *param);
+
+void mouse_move(double x, double y, void *param);
+
+void game_loop(void *param);
+
+void mouse_click(mlx_button_t button, mlx_button_action_t action, mlx_keymod_t mods, void *param);
+void render_frame(t_data *data);
 #endif
