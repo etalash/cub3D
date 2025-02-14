@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maba <maba@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: stalash <stalash@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 13:46:41 by stalash           #+#    #+#             */
-/*   Updated: 2025/02/14 18:37:41 by maba             ###   ########.fr       */
+/*   Updated: 2025/02/14 21:12:51 by stalash          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,22 @@
 # define MAP_HEIGHT 67
 
 // ******* FULL HD *****
-# define RES_X_F 1920
-# define RES_Y_F 1080
+# define RES_X_F 800
+# define RES_Y_F 500
 # define MAP_WIDE_F 60
 # define MAP_HEIGHT_F 33
+# define SIZE_OF_IMAGE 33
+
+typedef struct s_image
+{
+	mlx_image_t	*background;
+	mlx_image_t	*wall;
+	// mlx_image_t	*prize;
+	mlx_image_t	*player;
+	// mlx_image_t	*door_open;
+	// mlx_image_t	*door_closed;
+}t_image;
+
 
 typedef struct s_player
 {
@@ -55,8 +67,8 @@ typedef struct s_map
 	int				m_h; // map height
 	int				m_w; // map wide
 	char			p_p; // player position
-	unsigned int	floor_color;
-	unsigned int	ceiling_color;
+	int32_t			floor_color;
+	int32_t			ceiling_color;
 
 }	t_map;
 
@@ -66,6 +78,7 @@ typedef struct s_data
 	mlx_image_t	*win;
 	t_player	*player;
 	t_map		*map;
+	t_image		image;
 }	t_data;
 
 void	parsing(char *argv, t_data *data);
@@ -86,9 +99,9 @@ void	free_tokens(char **tokens);
 
 void init_map(t_map *map);
 
-void init_data(t_data *data, char *map_file);
+void init_data(t_data *data);
 
-void load_map(t_data *data, char *map_file);
+void load_map(t_data *data);
 
 void init_mlx(t_data *data);
 
@@ -108,6 +121,14 @@ void mouse_move(double x, double y, void *param);
 
 void game_loop(void *param);
 
-void mouse_click(mlx_button_t button, mlx_button_action_t action, mlx_keymod_t mods, void *param);
+// void mouse_click(mlx_button_t button, mlx_button_action_t action, mlx_keymod_t mods, void *param);
 void render_frame(t_data *data);
+
+
+
+//********************** TEST*************** */
+void	display_background(t_data *data);
+void	*load_image(t_data *data, char *str);
+void	key_hook(mlx_key_data_t key_data, void *param);
+void	display_wall(t_data *data);
 #endif

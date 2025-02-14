@@ -3,47 +3,44 @@
 /*                                                        :::      ::::::::   */
 /*   hooks.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maba <maba@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: stalash <stalash@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 16:56:54 by maba              #+#    #+#             */
-/*   Updated: 2025/02/14 18:38:50 by maba             ###   ########.fr       */
+/*   Updated: 2025/02/14 20:42:49 by stalash          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../cub3d.h"
 
-
 void key_press(mlx_key_data_t keydata, void *param)
 {
-    t_data *data = (t_data *)param;
+	t_data *data = (t_data *)param;
 
-    // Gérer les touches enfoncées (W, A, S, D, flèches, etc.)
-    if (keydata.key == MLX_KEY_W && keydata.action == MLX_PRESS)
-        data->player->x_p += 1; // Déplacer le joueur vers l'avant
-    if (keydata.key == MLX_KEY_S && keydata.action == MLX_PRESS)
-        data->player->x_p -= 1; // Déplacer le joueur vers l'arrière
-    if (keydata.key == MLX_KEY_A && keydata.action == MLX_PRESS)
-        data->player->y_p -= 1; // Déplacer le joueur vers la gauche
-    if (keydata.key == MLX_KEY_D && keydata.action == MLX_PRESS)
-        data->player->y_p += 1; // Déplacer le joueur vers la droite
+	// Gérer les touches enfoncées (W, A, S, D, flèches, etc.)
+	if (keydata.key == MLX_KEY_W && keydata.action == MLX_PRESS)
+		data->player->x_p += 1; // Déplacer le joueur vers l'avant
+	if (keydata.key == MLX_KEY_S && keydata.action == MLX_PRESS)
+		data->player->x_p -= 1; // Déplacer le joueur vers l'arrière
+	if (keydata.key == MLX_KEY_A && keydata.action == MLX_PRESS)
+		data->player->y_p -= 1; // Déplacer le joueur vers la gauche
+	if (keydata.key == MLX_KEY_D && keydata.action == MLX_PRESS)
+		data->player->y_p += 1; // Déplacer le joueur vers la droite
 }
 
 void key_release(mlx_key_data_t keydata, void *param)
 {
-    t_data *data = (t_data *)param;
+	t_data *data = (t_data *)param;
 
-    // Gérer les touches relâchées (optionnel)
-    if (keydata.key == MLX_KEY_W && keydata.action == MLX_RELEASE)
-        data->player->x_p = 0; // Arrêter le déplacement vers l'avant
-    if (keydata.key == MLX_KEY_S && keydata.action == MLX_RELEASE)
-        data->player->x_p = 0; // Arrêter le déplacement vers l'arrière
-    if (keydata.key == MLX_KEY_A && keydata.action == MLX_RELEASE)
-        data->player->y_p = 0; // Arrêter le déplacement vers la gauche
-    if (keydata.key == MLX_KEY_D && keydata.action == MLX_RELEASE)
-        data->player->y_p = 0; // Arrêter le déplacement vers la droite
+	// Gérer les touches relâchées (optionnel)
+	if (keydata.key == MLX_KEY_W && keydata.action == MLX_RELEASE)
+		data->player->x_p = 0; // Arrêter le déplacement vers l'avant
+	if (keydata.key == MLX_KEY_S && keydata.action == MLX_RELEASE)
+		data->player->x_p = 0; // Arrêter le déplacement vers l'arrière
+	if (keydata.key == MLX_KEY_A && keydata.action == MLX_RELEASE)
+		data->player->y_p = 0; // Arrêter le déplacement vers la gauche
+	if (keydata.key == MLX_KEY_D && keydata.action == MLX_RELEASE)
+		data->player->y_p = 0; // Arrêter le déplacement vers la droite
 }
-
-
 
 // void mouse_click(mlx_button_t button, mlx_button_action_t action, mlx_keymod_t mods, void *param)
 // {
@@ -56,17 +53,16 @@ void key_release(mlx_key_data_t keydata, void *param)
 //     }
 // }
 
-
 void game_loop(void *param)
 {
-    t_data *data = (t_data *)param;
-    // Mettre à jour et afficher la frame
-    render_frame(data);
+	t_data *data = (t_data *)param;
+	// Mettre à jour et afficher la frame
+	render_frame(data);
 }
 
 void render_frame(t_data *data)
 {
-    (void) data;
-    
-    // Implémenter le rendu de la frame complète (murs, minimap, etc.)
+	(void)data;
+
+	// Implémenter le rendu de la frame complète (murs, minimap, etc.)
 }
