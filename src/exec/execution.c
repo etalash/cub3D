@@ -6,82 +6,12 @@
 /*   By: stalash <stalash@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 18:33:38 by stalash           #+#    #+#             */
-/*   Updated: 2025/02/19 21:12:51 by stalash          ###   ########.fr       */
+/*   Updated: 2025/02/19 21:16:04 by stalash          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../cub3d.h"
 
-
-// void	move_player(t_data *data, double move_x, double move_y)
-// {
-// 	int	p_x;
-// 	int	p_y;
-
-// 	p_x = roundf(data->player->x_p + move_x) / 16;
-// 	p_y = roundf(data->player->y_p + move_y) / 16;
-// 	if (data->map->map_cub[p_y][p_x] != '1')
-// 	{
-// 		data->player->x_p += move_x;
-// 		data->player->y_p += move_y;
-// 	}
-// }
-
-// void	rotate_player(t_player *ply, int rot)
-// {
-// 	if (rot == 1)
-// 	{
-// 		ply->angel += (0.045 * M_PI) / 180;
-// 		if (ply->angel > 0.045 * M_PI)
-// 			ply->angel -= 0.045 * M_PI;
-// 	}
-// 	else
-// 	{
-// 		ply->angel -= (0.045 * M_PI) / 180;
-// 		if (ply->angel < 0)
-// 			ply->angel += 0.045 * M_PI;
-// 	}
-// }
-
-// void	hook(t_data *data, double move_x, double move_y)
-// {
-// 	if (data->player->rotation == 1)
-// 		rotate_player(data->player, 1);
-// 	if (data->player->rotation == -1)
-// 		rotate_player(data->player, -1);
-// 	if (data->player->vertical == 1)
-// 	{
-// 		move_x = -sin(data->player->angel) * 2;
-// 		move_y = cos(data->player->angel) * 2;
-// 	}
-// 	if (data->player->vertical == -1)
-// 	{
-// 		move_x = sin(data->player->angel) * 2;
-// 		move_y = -cos(data->player->angel) * 2;
-// 	}
-// 	if (data->player->vertical == 2)
-// 	{
-// 		move_x = -cos(data->player->angel) * 2;
-// 		move_y = -sin(data->player->angel) * 2;
-// 	}
-// 	if (data->player->vertical == -2)
-// 	{
-// 		move_x = cos(data->player->angel) * 2;
-// 		move_y = sin(data->player->angel) * 2;
-// 	}
-// 	move_player(data, move_x, move_y);
-// }
-
-// void	game_loop(void *ptr)
-// {
-// 	t_data	*data;
-
-// 	data = (t_data *)ptr;
-// 	mlx_delete_image(data->mlx, data->win);
-// 	data->win = mlx_new_image(data->mlx, data->map->res_w, data->map->res_h);
-// 	hook(data, 0, 0);
-// 	mlx_image_to_window(data->mlx, data->win, 0, 0);
-// }
 
 void	re_init(mlx_key_data_t key_data, t_data *data)
 {
