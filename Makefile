@@ -6,7 +6,7 @@
 #    By: stalash <stalash@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/31 13:17:27 by stalash           #+#    #+#              #
-#    Updated: 2025/02/14 20:36:08 by stalash          ###   ########.fr        #
+#    Updated: 2025/02/19 21:04:18 by stalash          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -97,8 +97,8 @@ NAME = cub3D
 SRC_DIR = src
 SRCS = $(SRC_DIR)/parse/main.c $(SRC_DIR)/parse/free.c $(SRC_DIR)/parse/map_data.c \
 		$(SRC_DIR)/parse/parsing.c $(SRC_DIR)/parse/process_texture_color.c \
-		$(SRC_DIR)/parse/texture_color.c $(SRC_DIR)/parse/valid_map.c $(SRC_DIR)/exec/init.c \
-		$(SRC_DIR)/exec/hooks.c
+		$(SRC_DIR)/parse/texture_color.c $(SRC_DIR)/parse/valid_map.c  $(SRC_DIR)/exec/execution.c$
+		# (SRC_DIR)/exec/init.c $(SRC_DIR)/exec/hooks.c
 OBJ = $(SRCS:.c=.o)
 
 MLX_HEADER = lib/MLX42/include/MLX42

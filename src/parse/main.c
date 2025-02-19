@@ -6,7 +6,7 @@
 /*   By: stalash <stalash@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 14:04:33 by stalash           #+#    #+#             */
-/*   Updated: 2025/02/14 20:59:46 by stalash          ###   ########.fr       */
+/*   Updated: 2025/02/19 20:42:13 by stalash          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,16 +41,17 @@ int main(int argc, char **argv)
 	data.map = &map;
 	parsing(argv[1], &data);
 	mlx_set_setting(MLX_STRETCH_IMAGE, true);
-	data.mlx = mlx_init(data.map->res_w, data.map->res_h, "cub3D", 1);
-	if (!data.mlx)
-		return (1);
-	display_background(&data);
-	display_wall(&data);
-	// display_player_exit(&data);
-	// mlx_key_hook(data.mlx, key_hook, &data);
-	// init_data(&data);
-	// init_mlx(&data);
-	mlx_loop(data.mlx);
-	deallocate_map(&data);
+	execution(&data);
+	// // data.mlx = mlx_init(data.map->res_w, data.map->res_h, "cub3D", 1);
+	// // if (!data.mlx)
+	// // 	return (1);
+	// display_background(&data);
+	// display_wall(&data);
+	// // display_player_exit(&data);
+	// // mlx_key_hook(data.mlx, key_hook, &data);
+	// // init_data(&data);
+	// // init_mlx(&data);
+	// mlx_loop(data.mlx);
+	// deallocate_map(&data);
 	return (0);
 }

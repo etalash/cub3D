@@ -6,7 +6,7 @@
 /*   By: stalash <stalash@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 13:46:41 by stalash           #+#    #+#             */
-/*   Updated: 2025/02/14 21:12:51 by stalash          ###   ########.fr       */
+/*   Updated: 2025/02/19 20:57:59 by stalash          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@
 # define MAP_HEIGHT_F 33
 # define SIZE_OF_IMAGE 33
 
+#define PLAYER_ANGEL 90
+
 typedef struct s_image
 {
 	mlx_image_t	*background;
@@ -49,8 +51,12 @@ typedef struct s_image
 
 typedef struct s_player
 {
-	int	x_p;
-	int	y_p;
+	int		x_p;
+	int		y_p;
+	int		rotation;
+	int		vertical;
+	double	angel;
+	int		radian_FOV;
 }	t_player;
 
 typedef struct s_map
@@ -78,7 +84,11 @@ typedef struct s_data
 	mlx_image_t	*win;
 	t_player	*player;
 	t_map		*map;
-	t_image		image;
+	t_image		*image;
+	mlx_texture_t *nord;
+	mlx_texture_t *south;
+	mlx_texture_t *east;
+	mlx_texture_t *west;
 }	t_data;
 
 void	parsing(char *argv, t_data *data);
@@ -131,4 +141,9 @@ void	display_background(t_data *data);
 void	*load_image(t_data *data, char *str);
 void	key_hook(mlx_key_data_t key_data, void *param);
 void	display_wall(t_data *data);
+
+
+
+
+void	execution(t_data *data);
 #endif
