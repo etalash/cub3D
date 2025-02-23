@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   texture_color.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maba <maba@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: stalash <stalash@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 17:28:17 by stalash           #+#    #+#             */
-/*   Updated: 2025/02/13 02:20:38 by maba             ###   ########.fr       */
+/*   Updated: 2025/02/23 16:54:46 by stalash          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ char *remove_whitespace(char *line)
 		len--;
 	len++;
 	length = len - i;
-	if (length <= 0)
+	if (length < 0)
 		return (NULL);
 	retrieved_line = ft_strndup(line + i, length);
 	if (retrieved_line == NULL)
@@ -64,9 +64,8 @@ char *refrctoring_line(int fd)
 		free(line);
 		if (!refrctored_line || *refrctored_line == '\0')
 		{
-			printf("Empty Line in the function\n");
 			free(refrctored_line);
-			return (NULL);
+			continue;
 		}
 		return (refrctored_line);
 	}
@@ -76,19 +75,27 @@ char *retrieve_texture_and_color(int fd, t_data data)
 {
 	char *colors;
 	int result;
+	int	map_started;
 
+	map_started = 0;
 	result = 0;
 	while (1)
 	{
 		colors = refrctoring_line(fd);
 		if (!colors)
 			break;
+		if (map_started)
+		{
+			free(colors);
+			printf("ERROR : Map content must be the last element.\n");
+			return (NULL);
+		}
 		result = process_map_line(colors, data);
 		if (result == -1)
 		{
 			free(colors);
 			printf("ERROR : Invalid texture path or color format.\n");
-			break ;
+			break;
 		}
 		else if (result == 1)
 		{

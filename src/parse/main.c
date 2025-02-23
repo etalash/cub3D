@@ -6,7 +6,7 @@
 /*   By: stalash <stalash@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 14:04:33 by stalash           #+#    #+#             */
-/*   Updated: 2025/02/19 20:42:13 by stalash          ###   ########.fr       */
+/*   Updated: 2025/02/23 16:25:25 by stalash          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@ void init_map(t_map *map)
 	map->south = NULL;
 	map->east = NULL;
 	map->west = NULL;
-	map->res_w = RES_X_F;
-	map->res_h = RES_Y_F;
+	map->res_w = RES_X;
+	map->res_h = RES_Y;
 	map->p_x = 0;
 	map->p_y = 0;
 	map->map_cub = NULL;
@@ -42,6 +42,7 @@ int main(int argc, char **argv)
 	parsing(argv[1], &data);
 	mlx_set_setting(MLX_STRETCH_IMAGE, true);
 	execution(&data);
+	deallocate_map(&data);
 	// // data.mlx = mlx_init(data.map->res_w, data.map->res_h, "cub3D", 1);
 	// // if (!data.mlx)
 	// // 	return (1);

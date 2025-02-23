@@ -6,7 +6,7 @@
 /*   By: stalash <stalash@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 18:33:38 by stalash           #+#    #+#             */
-/*   Updated: 2025/02/20 13:48:46 by stalash          ###   ########.fr       */
+/*   Updated: 2025/02/23 14:51:07 by stalash          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,12 +33,14 @@ void	ceil_floor(t_data *data)
 		}
 	}
 }
+
 // 16 is here tile the same thing like inthe init_player function
 void	move_player(t_data *data, double x_position, double y_position)
 {
 	int	p_x;
 	int	p_y;
 
+	// printf("here we are\n");
 	p_x = roundf(data->player->x_p + x_position) / 32;
 	p_y = roundf(data->player->y_p + y_position) / 32;
 	if (data->map->map_cub[p_y][p_x] != '1')
@@ -58,7 +60,7 @@ void	rotation(t_data *data, int rotate)
 		if (data->player->angel > 2 * 3.1415)
 			data->player->angel -= 2 * 3.1415;
 	}
-	else 
+	else
 	{
 		data->player->angel -= 2 * (3.1415 / 180);
 		if (data->player->angel < 0)
@@ -87,12 +89,12 @@ void	put_hooks(t_data *data)
 		x_position = sin(data->player->angel) * 4;
 		y_position = -cos(data->player->angel) * 4;
 	}
-	if (data->player->vertical == 2)
+	if (data->player->vertical == -2)
 	{
 		x_position = -cos(data->player->angel) * 4;
 		y_position = -sin(data->player->angel) * 4;
 	}
-	if (data->player->vertical== -2)
+	if (data->player->vertical== 2)
 	{
 		x_position = cos(data->player->angel) * 4;
 		y_position = sin(data->player->angel) * 4;
@@ -126,7 +128,6 @@ void	re_init(mlx_key_data_t key_data, t_data *data)
 			|| (key_data.key == MLX_KEY_DOWN && key_data.key == 1))
 		data->player->rotation = 0;
 }
-
 void	key_hook(mlx_key_data_t key_data, void *ptr)
 {
 	t_data	*data;
@@ -169,51 +170,75 @@ void	init_player(t_data *data)
 		data->player->angel = 3 * (3.1415 / 2);
 }
 
-void	init_textures(t_data *data)
+void	*load_image(t_data *data, char *str)
 {
-	data->nord = (mlx_texture_t *)data->map->nord;
-	data->south = (mlx_texture_t *)data->map->south;
-	data->east = (mlx_texture_t *)data->map->east;
-	data->west = (mlx_texture_t *)data->map->west;
-	data->nord = mlx_load_png("assets/texture/black.png");
+	mlx_texture_t	*texture;
+	mlx_image_t		*image;
+
+	texture = mlx_load_png(str);
+	image = mlx_texture_to_image(data->mlx, texture);
+	mlx_delete_texture(texture);
+	return (image);
+}
+
+int	init_textures(t_data *data)
+{
+	// data->nord = (mlx_texture_t *)data->map->nord;
+	// data->south = (mlx_texture_t *)data->map->south;
+	// data->east = (mlx_texture_t *)data->map->east;
+	// data->west = (mlx_texture_t *)data->map->west;
+	// data->nord = mlx_load_png(data->map->nord);
 	if (!data->nord)
-		return (printf("ERROR: can't init texture\n"), exit(0));
-	data->south = mlx_load_png("assets/texture/context_01.png");
+		return (1);
+	data->south = mlx_load_png(data->map->south);
 	if (!data->south)
-		return (printf("ERROR: can't init texture\n"), exit(0));
-	data->east = mlx_load_png("assets/texture/brick_wall_09.png");
+		return (1);
+	data->east = mlx_load_png(data->map->east);
 	if (!data->east)
-		return (printf("ERROR: can't init texture\n"), exit(0));
-	data->west = mlx_load_png("assets/texture/plaster_brick_pattern.png");
+		return (1);
+	data->west = mlx_load_png(data->map->west);
 	if (!data->west)
-		return (printf("ERROR: can't init texture\n"), exit)(0);
+		return (1);
 
 	// data->nord = load_image(data, "assets/texture/clay.png");
 	// if (!data->nord)
-	// 	return (printf("ERROR: can't init texture\n"), exit(0));
+	// 	return (printf("ERROR: can't init texture\n"), 1);
 	// data->south = load_image(data, "assets/texture/context_01.png");
 	// if (!data->south)
-	// 	return (printf("ERROR: can't init texture\n"), exit(0));
+	// 	return (printf("ERROR: can't init texture\n"), 1);
 	// data->east = load_image(data, "assets/texture/brick_wall_09.png");
 	// if (!data->east)
-	// 	return (printf("ERROR: can't init texture\n"), exit(0));
+	// 	return (printf("ERROR: can't init texture\n"), 1);
 	// data->west = load_image(data, "assets/texture/plaster_brick_pattern.png");
 	// if (!data->west)
-	// 	return (printf("ERROR: can't init texture\n"), exit)(0);
+	// 	return (printf("ERROR: can't init texture\n"), 1);
+	return (0);
 }
 
 void	execution(t_data *data)
 {
+	printf("Nord: %s\n", data->map->nord);
+	printf("south: %s\n", data->map->south);
+	printf("east: %s\n", data->map->east);
+	printf("west: %s\n", data->map->west);
+	for(int i = 0; data->map->map_cub[i][0]; i++)
+		printf("%s\n", data->map->map_cub[i]);
+	printf("res height: %d\n", data->map->res_h);
+	printf("res wide: %d\n", data->map->res_w);
+	printf("floor: %d\n",data->map->floor_color);
+	printf("ceil: %d\n",data->map->ceiling_color);
+
+
 	data->mlx = mlx_init(data->map->res_w, data->map->res_h, "Cub3D ", 0);
 	if (!data->mlx)
 	{
 		printf("ERROR: can't init mlx\n");
 		return ;
 	}
-	init_textures(data);
+	if (init_textures(data))
+		return (printf("ERROR: can't init texture\n"), deallocate_map(data), exit(1));
 	init_player(data);
 	mlx_key_hook(data->mlx, key_hook, data);
 	mlx_loop_hook(data->mlx, game_loop, data);
 	mlx_loop(data->mlx);
-	deallocate_map(data);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   process_texture_color.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maba <maba@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: stalash <stalash@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 17:29:41 by stalash           #+#    #+#             */
-/*   Updated: 2025/02/14 18:32:54 by maba             ###   ########.fr       */
+/*   Updated: 2025/02/23 16:55:42 by stalash          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ uint32_t set_color(char *line)
 		return (-1);
 	if (count_tokens(tokens) == 1)
 		return (free_tokens(tokens), -1);
-	if (!ft_isnumber(tokens[0]) || !ft_isnumber(tokens[1]) || !ft_isnumber(tokens[2]))
+	if (ft_isnumber(tokens[0]) || ft_isnumber(tokens[1]) || ft_isnumber(tokens[2]))
 		return (free_tokens(tokens), -1);
 	red = ft_atoi(tokens[0]);
 	green = ft_atoi(tokens[1]);

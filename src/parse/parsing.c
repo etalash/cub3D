@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maba <maba@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: stalash <stalash@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:36:56 by stalash           #+#    #+#             */
-/*   Updated: 2025/02/14 18:25:36 by maba             ###   ########.fr       */
+/*   Updated: 2025/02/23 15:36:45 by stalash          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,20 @@ int valid_map_name(char *argv)
 	return (0);
 }
 
+void	debug1(t_data *data)
+{
+	printf("Nord: %s\n", data->map->nord);
+	printf("south: %s\n", data->map->south);
+	printf("east: %s\n", data->map->east);
+	printf("west: %s\n", data->map->west);
+	for(int i = 0; data->map->map_cub[i][0]; i++)
+		printf("%s\n", data->map->map_cub[i]);
+	printf("res height: %d\n", data->map->res_h);
+	printf("res wide: %d\n", data->map->res_w);
+	printf("floor: %d\n",data->map->floor_color);
+	printf("ceil: %d\n",data->map->ceiling_color);
+}
+
 void parsing(char *argv, t_data *data)
 {
 	int fd;
@@ -93,6 +107,8 @@ void parsing(char *argv, t_data *data)
 	if (setup_map_storage(*data) == 1)
 		return (close(fd), exit(1));
 	map_colors = retrieve_texture_and_color(fd, *data);
+	// debug1(data);
+
 	if (map_colors == NULL)
 		return (deallocate_map(data), close(fd), exit(1));
 	if (retrieve_map_data(fd, *data, map_colors) != 0)

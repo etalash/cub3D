@@ -6,7 +6,7 @@
 /*   By: stalash <stalash@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 13:46:41 by stalash           #+#    #+#             */
-/*   Updated: 2025/02/20 13:20:13 by stalash          ###   ########.fr       */
+/*   Updated: 2025/02/23 15:34:48 by stalash          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@
 # include "lib/ft_printf/ft_printf.h"
 # include "lib/MLX42/include/MLX42/MLX42.h"
 
-
 // ******** 4K *********
 # define RES_X 3840
 # define RES_Y 2160
@@ -30,8 +29,8 @@
 # define MAP_HEIGHT 67
 
 // ******* FULL HD *****
-# define RES_X_F 800
-# define RES_Y_F 500
+# define RES_X_F 1900
+# define RES_Y_F 1000
 # define MAP_WIDE_F 60
 # define MAP_HEIGHT_F 33
 # define SIZE_OF_IMAGE 33
@@ -141,7 +140,8 @@ void	display_background(t_data *data);
 void	*load_image(t_data *data, char *str);
 void	key_hook(mlx_key_data_t key_data, void *param);
 void	display_wall(t_data *data);
-
+void	free_sub_map(char **map);
+void	debug1(t_data *data);
 
 
 
