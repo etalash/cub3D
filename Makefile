@@ -6,7 +6,7 @@
 #    By: stalash <stalash@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/31 13:17:27 by stalash           #+#    #+#              #
-#    Updated: 2025/02/19 21:04:18 by stalash          ###   ########.fr        #
+#    Updated: 2025/02/20 13:17:34 by stalash          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -91,13 +91,13 @@
 
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror 
 
 NAME = cub3D
 SRC_DIR = src
 SRCS = $(SRC_DIR)/parse/main.c $(SRC_DIR)/parse/free.c $(SRC_DIR)/parse/map_data.c \
 		$(SRC_DIR)/parse/parsing.c $(SRC_DIR)/parse/process_texture_color.c \
-		$(SRC_DIR)/parse/texture_color.c $(SRC_DIR)/parse/valid_map.c  $(SRC_DIR)/exec/execution.c$
+		$(SRC_DIR)/parse/texture_color.c $(SRC_DIR)/parse/valid_map.c $(SRC_DIR)/exec/execution.c
 		# (SRC_DIR)/exec/init.c $(SRC_DIR)/exec/hooks.c
 OBJ = $(SRCS:.c=.o)
 

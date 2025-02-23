@@ -6,7 +6,7 @@
 /*   By: stalash <stalash@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 13:46:41 by stalash           #+#    #+#             */
-/*   Updated: 2025/02/19 20:57:59 by stalash          ###   ########.fr       */
+/*   Updated: 2025/02/20 13:20:13 by stalash          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ typedef struct s_data
 	mlx_image_t	*win;
 	t_player	*player;
 	t_map		*map;
-	t_image		*image;
+	// t_image		*image;
 	mlx_texture_t *nord;
 	mlx_texture_t *south;
 	mlx_texture_t *east;
