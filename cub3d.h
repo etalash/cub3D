@@ -3,16 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stalash <stalash@student.42.fr>            +#+  +:+       +#+        */
+/*   By: maba <maba@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 13:46:41 by stalash           #+#    #+#             */
-/*   Updated: 2025/02/23 15:34:48 by stalash          ###   ########.fr       */
+/*   Updated: 2025/02/24 15:35:52 by maba             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CUB3D_H
 # define CUB3D_H
-
 # include <stdio.h>
 # include <string.h>
 # include <limits.h>
@@ -37,6 +36,9 @@
 
 #define PLAYER_ANGEL 90
 
+# define FOV 1.0472 // Field of view (60 degrés en radians)
+# define NUM_RAYS RES_X // Nombre de rayons (un par colonne de pixels)
+
 typedef struct s_image
 {
 	mlx_image_t	*background;
@@ -48,6 +50,7 @@ typedef struct s_image
 }t_image;
 
 
+
 typedef struct s_player
 {
 	int		x_p;
@@ -56,7 +59,12 @@ typedef struct s_player
 	int		vertical;
 	double	angel;
 	int		radian_FOV;
+	float posX, posY;  // Position du joueur
+    float dirX, dirY;  // Vecteur de direction
+    float planeX, planeY; // Plan de la caméra (pour le FOV)
+    float angle;       // Angle de rotation du joueur
 }	t_player;
+
 
 typedef struct s_map
 {
@@ -89,6 +97,21 @@ typedef struct s_data
 	mlx_texture_t *east;
 	mlx_texture_t *west;
 }	t_data;
+
+typedef struct s_ray
+{
+    float cameraX;     // Position de la caméra sur l'écran
+    float rayDirX, rayDirY; // Direction du rayon
+    int mapX, mapY;    // Position actuelle dans la carte
+    float sideDistX, sideDistY; // Distance jusqu'au prochain carré
+    float deltaDistX, deltaDistY; // Distance entre les carrés
+    float perpWallDist; // Distance perpendiculaire au mur
+    int stepX, stepY;  // Direction du pas (1 ou -1)
+    int hit;           // Le rayon a-t-il touché un mur ?
+    int side;          // Mur touché (Nord/Sud ou Est/Ouest)
+} t_ray;
+
+
 
 void	parsing(char *argv, t_data *data);
 char	*retrieve_texture_and_color(int fd, t_data	data);
@@ -146,4 +169,10 @@ void	debug1(t_data *data);
 
 
 void	execution(t_data *data);
+
+
+// Prototypes des fonctions du raycasting
+void raycast(t_data *data);
+float cast_ray(t_data *data, int x, float ray_angle);
+void draw_wall(t_data *data, int x, float distance);
 #endif

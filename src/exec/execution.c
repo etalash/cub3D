@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stalash <stalash@student.42.fr>            +#+  +:+       +#+        */
+/*   By: maba <maba@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 18:33:38 by stalash           #+#    #+#             */
-/*   Updated: 2025/02/23 14:51:07 by stalash          ###   ########.fr       */
+/*   Updated: 2025/02/24 15:18:32 by maba             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,8 +114,10 @@ void	game_loop(void *ptr)
 	put_hooks(data);
 	ceil_floor(data);
 	// ray_casting(); // function could be here
+	raycast(data);
 	mlx_image_to_window(data->mlx, data->win, 0, 0);
 }
+
 
 void	re_init(mlx_key_data_t key_data, t_data *data)
 {
