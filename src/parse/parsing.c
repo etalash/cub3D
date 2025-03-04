@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stalash <stalash@student.42.fr>            +#+  +:+       +#+        */
+/*   By: maba <maba@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:36:56 by stalash           #+#    #+#             */
-/*   Updated: 2025/02/23 15:36:45 by stalash          ###   ########.fr       */
+/*   Updated: 2025/03/03 02:35:48 by maba             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,22 +100,22 @@ void parsing(char *argv, t_data *data)
 	char *map_colors;
 
 	if (valid_map_name(argv) == 1)
-		return (printf("Map's name is invalid\n"), exit(1));
+	return (printf("Map's name is invalid\n"), exit(1));
 	fd = open(argv, O_RDONLY);
 	if (fd <= 0)
-		return (printf("can't open the given map\n"), exit(1));
+	return (printf("can't open the given map\n"), exit(1));
 	if (setup_map_storage(*data) == 1)
-		return (close(fd), exit(1));
+	return (close(fd), exit(1));
 	map_colors = retrieve_texture_and_color(fd, *data);
 	// debug1(data);
-
+	
 	if (map_colors == NULL)
-		return (deallocate_map(data), close(fd), exit(1));
+	return (deallocate_map(data), close(fd), exit(1));
 	if (retrieve_map_data(fd, *data, map_colors) != 0)
-		return (deallocate_map(data), close(fd), exit(1));
+	return (deallocate_map(data), close(fd), exit(1));
 	close(fd);
 	// debug(data);	// Debug print
 	if (valid_map(*data) == 1)
-		return (deallocate_map(data), exit(1));
+	return (deallocate_map(data), exit(1));
 	// printf("Map data is valid\n"); // Debug print
 }

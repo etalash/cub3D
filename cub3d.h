@@ -6,7 +6,7 @@
 /*   By: maba <maba@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 13:46:41 by stalash           #+#    #+#             */
-/*   Updated: 2025/02/24 15:35:52 by maba             ###   ########.fr       */
+/*   Updated: 2025/03/03 01:59:02 by maba             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,19 +22,20 @@
 # include "lib/MLX42/include/MLX42/MLX42.h"
 
 // ******** 4K *********
-# define RES_X 3840
-# define RES_Y 2160
+// # define RES_X 3840
+// # define RES_Y 2160
 # define MAP_WIDE 120
 # define MAP_HEIGHT 67
 
 // ******* FULL HD *****
-# define RES_X_F 1900
-# define RES_Y_F 1000
+# define RES_X 1900
+# define RES_Y 1000
 # define MAP_WIDE_F 60
 # define MAP_HEIGHT_F 33
 # define SIZE_OF_IMAGE 33
 
 #define PLAYER_ANGEL 90
+#define MOVE_SPEED 0.1
 
 # define FOV 1.0472 // Field of view (60 degrés en radians)
 # define NUM_RAYS RES_X // Nombre de rayons (un par colonne de pixels)
@@ -174,5 +175,8 @@ void	execution(t_data *data);
 // Prototypes des fonctions du raycasting
 void raycast(t_data *data);
 float cast_ray(t_data *data, int x, float ray_angle);
-void draw_wall(t_data *data, int x, float distance);
+void draw_wall(t_data *data, int x, float distance, float ray_angle);
+void draw_player(t_data *data);
+void draw_map(t_data *data);
+void add_until_wall(t_ray *ray, t_map *map);
 #endif
