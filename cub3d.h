@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maba <maba@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: stalash <stalash@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 13:46:41 by stalash           #+#    #+#             */
-/*   Updated: 2025/03/03 01:59:02 by maba             ###   ########.fr       */
+/*   Updated: 2025/03/12 16:44:50 by stalash          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@
 # define SIZE_OF_IMAGE 33
 
 #define PLAYER_ANGEL 90
-#define MOVE_SPEED 0.1
+#define MOVE_SPEED 4
 
 # define FOV 1.0472 // Field of view (60 degrés en radians)
 # define NUM_RAYS RES_X // Nombre de rayons (un par colonne de pixels)
@@ -50,14 +50,13 @@ typedef struct s_image
 	// mlx_image_t	*door_closed;
 }t_image;
 
-
-
 typedef struct s_player
 {
 	int		x_p;
 	int		y_p;
 	int		rotation;
 	int		vertical;
+	int		horizontal;
 	double	angel;
 	int		radian_FOV;
 	float posX, posY;  // Position du joueur
@@ -83,7 +82,6 @@ typedef struct s_map
 	char			p_p; // player position
 	int32_t			floor_color;
 	int32_t			ceiling_color;
-
 }	t_map;
 
 typedef struct s_data

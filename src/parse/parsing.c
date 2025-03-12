@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maba <maba@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: stalash <stalash@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:36:56 by stalash           #+#    #+#             */
-/*   Updated: 2025/03/03 02:35:48 by maba             ###   ########.fr       */
+/*   Updated: 2025/03/11 11:12:03 by stalash          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,6 @@ void parsing(char *argv, t_data *data)
 	return (close(fd), exit(1));
 	map_colors = retrieve_texture_and_color(fd, *data);
 	// debug1(data);
-	
 	if (map_colors == NULL)
 	return (deallocate_map(data), close(fd), exit(1));
 	if (retrieve_map_data(fd, *data, map_colors) != 0)
