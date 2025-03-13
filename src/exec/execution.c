@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stalash <stalash@student.42.fr>            +#+  +:+       +#+        */
+/*   By: maba <maba@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 18:33:38 by stalash           #+#    #+#             */
-/*   Updated: 2025/03/11 12:37:27 by stalash          ###   ########.fr       */
+/*   Updated: 2025/03/13 16:09:40 by maba             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ void	move_player(t_data *data, double move_x, double move_y)
 		data->player->y_p += move_y;
 	}
 }
+
 
 void	rotation(t_data *data, int rotate)
 {
@@ -93,6 +94,7 @@ void put_hooks(t_data *data)
         x_position = sin(data->player->angle) * MOVE_SPEED;
         y_position = -cos(data->player->angle) * MOVE_SPEED;
     }
+	// printf("Moving player to x: %f, y: %f\n", x_position, y_position);
     move_player(data, x_position, y_position);
 }
 
@@ -139,6 +141,16 @@ void	init_player(t_data *data)
 	data->player = (t_player *)ft_calloc(1, sizeof(t_player));
 	if (!data->player)
 		return(printf("ERROR: can't malloc memory for the player\n"), exit(0));
+    data->ray = malloc(sizeof(t_ray));
+    if (!data->ray)
+    {
+        fprintf(stderr, "Error: Failed to allocate memory for data->ray\n");
+        exit(1);
+    }
+	data->ray->hit = 0;
+	data->ray->perpWallDist = 0.0f;
+	data->ray->side = 0;
+		
 	data->player->radian_FOV = PLAYER_ANGEL * (3.1415 / 180);
 	data->player->x_p = (data->map->p_x * 32) + (32 / 2); 
 	data->player->y_p = (data->map->p_y * 32) + (32 / 2);
@@ -158,6 +170,7 @@ void	init_player(t_data *data)
 		data->player->angel = 3.1415;
 	else if (data->map->p_p == 'S')
 		data->player->angel = 3 * (3.1415 / 2);
+    printf("Player initialized at position (%d, %d) with angle %f\n", data->player->x_p, data->player->y_p, data->player->angel);
 }
 
 void	game_loop(void *ptr)

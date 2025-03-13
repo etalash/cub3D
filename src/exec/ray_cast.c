@@ -3,140 +3,166 @@
 /*                                                        :::      ::::::::   */
 /*   ray_cast.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stalash <stalash@student.42.fr>            +#+  +:+       +#+        */
+/*   By: maba <maba@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 21:00:24 by maba              #+#    #+#             */
-/*   Updated: 2025/03/12 16:43:59 by stalash          ###   ########.fr       */
+/*   Updated: 2025/03/13 15:55:25 by maba             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../cub3d.h"
 
-// Function to advance the ray until it hits a wall
-void add_until_wall(t_ray *ray, t_map *map)
+int unit_circle(float angle, char c) // Vérifie dans quel quadrant est l'angle
 {
-    while (true)
+    if (c == 'x')
     {
-        if (ray->sideDistX < ray->sideDistY)
+        if (angle > 0 && angle < M_PI)
+            return (1);
+    }
+    else if (c == 'y')
+    {
+        if (angle > (M_PI / 2) && angle < (3 * M_PI) / 2)
+            return (1);
+    }
+    return (0);
+}
+
+int inter_check(float angle, float *inter, float *step, int is_horizon)
+{
+    if (is_horizon)
+    {
+        if (angle > 0 && angle < M_PI)
         {
-            ray->sideDistX += ray->deltaDistX;
-            ray->mapX += ray->stepX;
-            ray->side = 0;
+            *inter += TILE_SIZE;
+            return (-1);
+        }
+        *step *= -1;
+    }
+    else
+    {
+        if (!(angle > M_PI / 2 && angle < 3 * M_PI / 2))
+        {
+            *inter += TILE_SIZE;
+            return (-1);
+        }
+        *step *= -1;
+    }
+    return (1);
+}
+
+int wall_hit(float x, float y, t_map *map)
+{
+    int x_m = floor(x / TILE_SIZE);
+    int y_m = floor(y / TILE_SIZE);
+    
+    if (x < 0 || y < 0 || y_m >= map->m_h || x_m >= map->m_w)
+        return (0); // Considérer comme un mur si hors limites
+
+    if (!map->map_cub[y_m] || x_m >= (int)strlen(map->map_cub[y_m]))
+        return (0);
+
+    return (map->map_cub[y_m][x_m] == '1' ? 0 : 1);
+}
+
+
+float get_h_inter(t_data *data, float angle)
+{
+    float h_x, h_y, x_step, y_step;
+    int pixel, max_steps = 1000;  // Protection anti-boucle infinie
+    
+    y_step = TILE_SIZE;
+    x_step = TILE_SIZE / tan(angle);
+    h_y = floor(data->player->y_p / TILE_SIZE) * TILE_SIZE;
+    pixel = inter_check(angle, &h_y, &y_step, 1);
+    h_x = data->player->x_p + (h_y - data->player->y_p) / tan(angle);
+
+    if ((unit_circle(angle, 'y') && x_step > 0) || (!unit_circle(angle, 'y') && x_step < 0))
+        x_step *= -1;
+
+    while (wall_hit(h_x, h_y - pixel, data->map) && max_steps-- > 0)
+    {
+        h_x += x_step;
+        h_y += y_step;
+    }
+
+    if (max_steps <= 0)
+    {
+        fprintf(stderr, "Error: Infinite loop detected in get_h_inter()\n");
+        exit(1);
+    }
+
+    return sqrt(pow(h_x - data->player->x_p, 2) + pow(h_y - data->player->y_p, 2));
+}
+
+float get_v_inter(t_data *data, float angle)
+{
+    float v_x, v_y, x_step, y_step;
+    int pixel, max_steps = 1000;  // Protection anti-boucle infinie
+    
+    x_step = TILE_SIZE;
+    y_step = TILE_SIZE * tan(angle);
+    v_x = floor(data->player->x_p / TILE_SIZE) * TILE_SIZE;
+    pixel = inter_check(angle, &v_x, &x_step, 0);
+    v_y = data->player->y_p + (v_x - data->player->x_p) * tan(angle);
+
+    if ((unit_circle(angle, 'x') && y_step < 0) || (!unit_circle(angle, 'x') && y_step > 0))
+        y_step *= -1;
+
+    while (wall_hit(v_x - pixel, v_y, data->map) && max_steps-- > 0)
+    {
+        v_x += x_step;
+        v_y += y_step;
+    }
+
+    if (max_steps <= 0)
+    {
+        fprintf(stderr, "Error: Infinite loop detected in get_v_inter()\n");
+        exit(1);
+    }
+
+    return sqrt(pow(v_x - data->player->x_p, 2) + pow(v_y - data->player->y_p, 2));
+}
+
+void	raycast(t_data *data)
+{
+    if (!data->ray)
+    {
+        fprintf(stderr, "Error: data->ray is NULL in raycast()\n");
+        exit(1);
+    }
+
+    float h_inter, v_inter;
+    int ray = 0;
+    float ray_angle = data->player->angel - (FOV / 2);
+    
+    while (ray < RES_X)
+    {
+        data->ray->hit = 0;
+        data->ray->rayDirX = cos(ray_angle);
+        data->ray->rayDirY = sin(ray_angle);
+        
+        h_inter = get_h_inter(data, ray_angle);
+        v_inter = get_v_inter(data, ray_angle);
+
+        if (v_inter <= h_inter)
+        {
+            data->ray->perpWallDist = v_inter;
+            data->ray->side = 0;
         }
         else
         {
-            ray->sideDistY += ray->deltaDistY;
-            ray->mapY += ray->stepY;
-            ray->side = 1;
+            data->ray->perpWallDist = h_inter;
+            data->ray->side = 1;
         }
-        if (ray->mapX < 0 || ray->mapY < 0 || ray->mapX >= map->m_w || ray->mapY >= map->m_h || map->map_cub[ray->mapY][ray->mapX] == '1')
-            break;
-    }
-}
 
-// // Function to cast a ray and calculate the distance to the wall
-float cast_ray(t_data *data, int x, float ray_angle)
-{
-    t_ray ray;
-    t_player *player = data->player;
-    t_map *map = data->map;
+        if (data->ray->perpWallDist <= 0)
+        {
+            fprintf(stderr, "Error: Invalid wall distance (%f)\n", data->ray->perpWallDist);
+            exit(1);
+        }
 
-    ray.cameraX = 2 * x / (float)data->map->res_w - 1;
-    ray.rayDirX = player->dirX * cos(ray_angle) - player->dirY * sin(ray_angle);
-    ray.rayDirY = player->dirX * sin(ray_angle) + player->dirY * cos(ray_angle);
-
-    ray.mapX = (int)player->posX;
-    ray.mapY = (int)player->posY;
-
-    ray.deltaDistX = fabs(1 / ray.rayDirX);
-    ray.deltaDistY = fabs(1 / ray.rayDirY);
-
-    if (ray.rayDirX < 0)
-    {
-        ray.stepX = -1;
-        ray.sideDistX = (player->posX - ray.mapX) * ray.deltaDistX;
-    }
-    else
-    {
-        ray.stepX = 1;
-        ray.sideDistX = (ray.mapX + 1.0 - player->posX) * ray.deltaDistX;
-    }
-
-    if (ray.rayDirY < 0)
-    {
-        ray.stepY = -1;
-        ray.sideDistY = (player->posY - ray.mapY) * ray.deltaDistY;
-    }
-    else
-    {
-        ray.stepY = 1;
-        ray.sideDistY = (ray.mapY + 1.0 - player->posY) * ray.deltaDistY;
-    }
-
-    add_until_wall(&ray, map);
-
-    if (ray.side == 0)
-        ray.perpWallDist = (ray.mapX - player->posX + (1 - ray.stepX) / 2) / ray.rayDirX;
-    else
-        ray.perpWallDist = (ray.mapY - player->posY + (1 - ray.stepY) / 2) / ray.rayDirY;
-
-    // Debugging output
-    // printf("Ray %d: angle=%.2f, posX=%.2f, posY=%.2f, dirX=%.2f, dirY=%.2f, perpWallDist=%.2f\n",
-    //        x, ray_angle, player->posX, player->posY, ray.rayDirX, ray.rayDirY, ray.perpWallDist);
-
-    return ray.perpWallDist;
-}
-
-
-void draw_wall(t_data *data, int x, float distance, float ray_angle)
-{
-    int wall_height;
-    int draw_start;
-    int draw_end;
-    int y;
-
-    // Correction de la distorsion du fish-eye
-    float corrected_distance = distance * cos(ray_angle - data->player->angle);
-
-    wall_height = (int)(data->map->res_h / corrected_distance);
-    draw_start = -wall_height / 2 + data->map->res_h / 2;
-    draw_end = wall_height / 2 + data->map->res_h / 2;
-
-    // Ensure draw_start and draw_end are within screen bounds
-    if (draw_start < 0) draw_start = 0;
-    if (draw_end >= data->map->res_h) draw_end = data->map->res_h - 1;
-
-    // Draw the wall
-    for (y = 0; y < data->map->res_h; y++)
-    {
-        if (y >= draw_start && y <= draw_end)
-            mlx_put_pixel(data->win, x, y, 0x000000); // Black color for walls
-        else if (y < draw_start)
-            mlx_put_pixel(data->win, x, y, 0x808080); // Gray color for ceiling
-        else
-            mlx_put_pixel(data->win, x, y, 0xFFFFFF); // White color for floor
-    }
-}
-
-// Main function to cast rays and draw walls
-void raycast(t_data *data)
-{
-    float ray_angle;
-    float angle_increment;
-    int x;
-
-    x = 0;
-    ray_angle = data->player->angle - FOV / 2;
-    angle_increment = FOV / NUM_RAYS;
-
-    // Cast the rays
-    while (x < NUM_RAYS)
-    {
-        float distance = cast_ray(data, x, ray_angle);
-
-        draw_wall(data, x, distance, ray_angle);
-
-        ray_angle += angle_increment;
-        x++;
+        render_wall(data, ray);
+        ray++;
+        ray_angle += (FOV / RES_X);
     }
 }

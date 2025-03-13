@@ -3,14 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stalash <stalash@student.42.fr>            +#+  +:+       +#+        */
+/*   By: maba <maba@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 14:04:33 by stalash           #+#    #+#             */
-/*   Updated: 2025/03/11 11:11:31 by stalash          ###   ########.fr       */
+/*   Updated: 2025/03/13 06:24:51 by maba             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../cub3d.h"
+
+
+void init_data(t_data *data)
+{
+    data->ray = malloc(sizeof(t_ray));
+    if (!data->ray)
+    {
+        fprintf(stderr, "Error: Failed to allocate memory for data->ray\n");
+        exit(1);
+    }
+}
 
 void init_map(t_map *map)
 {
@@ -37,6 +48,7 @@ int main(int argc, char **argv)
 
 	if (argc != 2 || !argv[1][0])
 		return (ft_printf("ERROR : Not enough arguments\n"), 0);
+	
 	init_map(&map);
 	data.map = &map;
 	parsing(argv[1], &data);
