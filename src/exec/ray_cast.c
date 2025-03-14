@@ -6,13 +6,13 @@
 /*   By: maba <maba@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 21:00:24 by maba              #+#    #+#             */
-/*   Updated: 2025/03/13 15:55:25 by maba             ###   ########.fr       */
+/*   Updated: 2025/03/14 05:28:11 by maba             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../cub3d.h"
 
-int unit_circle(float angle, char c) // Vérifie dans quel quadrant est l'angle
+int unit_circle(float angle, char c)
 {
     if (c == 'x')
     {
@@ -54,9 +54,9 @@ int wall_hit(float x, float y, t_map *map)
 {
     int x_m = floor(x / TILE_SIZE);
     int y_m = floor(y / TILE_SIZE);
-    
+
     if (x < 0 || y < 0 || y_m >= map->m_h || x_m >= map->m_w)
-        return (0); // Considérer comme un mur si hors limites
+        return (0);
 
     if (!map->map_cub[y_m] || x_m >= (int)strlen(map->map_cub[y_m]))
         return (0);
@@ -68,8 +68,8 @@ int wall_hit(float x, float y, t_map *map)
 float get_h_inter(t_data *data, float angle)
 {
     float h_x, h_y, x_step, y_step;
-    int pixel, max_steps = 1000;  // Protection anti-boucle infinie
-    
+    int pixel, max_steps = 1000;
+
     y_step = TILE_SIZE;
     x_step = TILE_SIZE / tan(angle);
     h_y = floor(data->player->y_p / TILE_SIZE) * TILE_SIZE;
@@ -86,19 +86,20 @@ float get_h_inter(t_data *data, float angle)
     }
 
     if (max_steps <= 0)
-    {
-        fprintf(stderr, "Error: Infinite loop detected in get_h_inter()\n");
-        exit(1);
-    }
+        return (INFINITY); 
 
-    return sqrt(pow(h_x - data->player->x_p, 2) + pow(h_y - data->player->y_p, 2));
+    float distance = sqrt(pow(h_x - data->player->x_p, 2) + pow(h_y - data->player->y_p, 2));
+    if (distance <= 0)
+        return (INFINITY); 
+
+    return distance;
 }
 
 float get_v_inter(t_data *data, float angle)
 {
     float v_x, v_y, x_step, y_step;
-    int pixel, max_steps = 1000;  // Protection anti-boucle infinie
-    
+    int pixel, max_steps = 1000;
+
     x_step = TILE_SIZE;
     y_step = TILE_SIZE * tan(angle);
     v_x = floor(data->player->x_p / TILE_SIZE) * TILE_SIZE;
@@ -115,32 +116,24 @@ float get_v_inter(t_data *data, float angle)
     }
 
     if (max_steps <= 0)
-    {
-        fprintf(stderr, "Error: Infinite loop detected in get_v_inter()\n");
-        exit(1);
-    }
+        return (INFINITY);
 
     return sqrt(pow(v_x - data->player->x_p, 2) + pow(v_y - data->player->y_p, 2));
 }
 
-void	raycast(t_data *data)
+void raycast(t_data *data)
 {
-    if (!data->ray)
-    {
-        fprintf(stderr, "Error: data->ray is NULL in raycast()\n");
-        exit(1);
-    }
-
     float h_inter, v_inter;
     int ray = 0;
     float ray_angle = data->player->angel - (FOV / 2);
-    
+
     while (ray < RES_X)
     {
         data->ray->hit = 0;
         data->ray->rayDirX = cos(ray_angle);
         data->ray->rayDirY = sin(ray_angle);
-        
+        data->ray->cameraX = ray_angle - data->player->angel;
+
         h_inter = get_h_inter(data, ray_angle);
         v_inter = get_v_inter(data, ray_angle);
 
@@ -155,7 +148,7 @@ void	raycast(t_data *data)
             data->ray->side = 1;
         }
 
-        if (data->ray->perpWallDist <= 0)
+        if (data->ray->perpWallDist <= 0 || data->ray->perpWallDist == INFINITY)
         {
             fprintf(stderr, "Error: Invalid wall distance (%f)\n", data->ray->perpWallDist);
             exit(1);

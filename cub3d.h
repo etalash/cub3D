@@ -6,7 +6,7 @@
 /*   By: maba <maba@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 13:46:41 by stalash           #+#    #+#             */
-/*   Updated: 2025/03/13 15:53:19 by maba             ###   ########.fr       */
+/*   Updated: 2025/03/14 05:09:39 by maba             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@
 
 #define PLAYER_ANGEL 90
 #define MOVE_SPEED 4
+#define ROTATION_SPEED (2 * (M_PI / 180))
 
 # define FOV 1.0472 // Field of view (60 degrés en radians)
 # define NUM_RAYS RES_X // Nombre de rayons (un par colonne de pixels)

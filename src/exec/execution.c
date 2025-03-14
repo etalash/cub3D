@@ -6,7 +6,7 @@
 /*   By: maba <maba@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 18:33:38 by stalash           #+#    #+#             */
-/*   Updated: 2025/03/13 16:09:40 by maba             ###   ########.fr       */
+/*   Updated: 2025/03/14 05:26:15 by maba             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,36 +34,38 @@ void	draw_map(t_data *data)
 	}
 }
 
-void	move_player(t_data *data, double move_x, double move_y)
+void move_player(t_data *data, double move_x, double move_y)
 {
-	int	p_x;
-	int	p_y;
+    int p_x;
+    int p_y;
 
-	p_x = roundf(data->player->x_p + move_x) / 32;
-	p_y = roundf(data->player->y_p + move_y) / 32;
-	if (data->map->map_cub[p_y][p_x] != '1')
-	{
-		data->player->x_p += move_x;
-		data->player->y_p += move_y;
-	}
+    p_x = (int)(data->player->x_p + move_x) / TILE_SIZE;
+    p_y = (int)(data->player->y_p + move_y) / TILE_SIZE;
+    if (data->map->map_cub[p_y][p_x] != '1')
+    {
+        data->player->x_p += move_x;
+        data->player->y_p += move_y;
+    }
 }
 
 
-void	rotation(t_data *data, int rotate)
+
+void rotation(t_data *data, int rotate)
 {
-	if (rotate == 1)
-	{
-		data->player->angel += 2 * (3.1415 / 180);
-		if (data->player->angel > (2 * 3.1415))
-			data->player->angel -= (2 * 3.1415);
-	}
-	else
-	{
-		data->player->angel -= 2 * (3.1415 / 180);
-		if (data->player->angel < 0)
-			data->player->angel += (2 * 3.1415);
-	}
+    if (rotate == 1)
+    {
+        data->player->angel += 2 * (M_PI / 180); // Rotation right
+        if (data->player->angel > (2 * M_PI))
+            data->player->angel -= (2 * M_PI);
+    }
+    else
+    {
+        data->player->angel -= 2 * (M_PI / 180); // Rotation left
+        if (data->player->angel < 0)
+            data->player->angel += (2 * M_PI);
+    }
 }
+
 
 void put_hooks(t_data *data)
 {
@@ -76,43 +78,44 @@ void put_hooks(t_data *data)
         rotation(data, -1);
     if (data->player->vertical == 1)
     {
-        x_position = -cos(data->player->angle) * MOVE_SPEED;
-        y_position = -sin(data->player->angle) * MOVE_SPEED;
+        x_position = -cos(data->player->angel) * MOVE_SPEED;
+        y_position = -sin(data->player->angel) * MOVE_SPEED;
     }
     if (data->player->vertical == -1)
     {
-        x_position = cos(data->player->angle) * MOVE_SPEED;
-        y_position = sin(data->player->angle) * MOVE_SPEED;
+        x_position = cos(data->player->angel) * MOVE_SPEED;
+        y_position = sin(data->player->angel) * MOVE_SPEED;
     }
     if (data->player->horizontal == 1)
     {
-        x_position = -sin(data->player->angle) * MOVE_SPEED;
-        y_position = cos(data->player->angle) * MOVE_SPEED;
+        x_position = -sin(data->player->angel) * MOVE_SPEED;
+        y_position = cos(data->player->angel) * MOVE_SPEED;
     }
     if (data->player->horizontal == -1)
     {
-        x_position = sin(data->player->angle) * MOVE_SPEED;
-        y_position = -cos(data->player->angle) * MOVE_SPEED;
+        x_position = sin(data->player->angel) * MOVE_SPEED;
+        y_position = -cos(data->player->angel) * MOVE_SPEED;
     }
-	// printf("Moving player to x: %f, y: %f\n", x_position, y_position);
     move_player(data, x_position, y_position);
 }
 
+
 void	re_init(mlx_key_data_t key_data, t_data *data)
 {
-	if (key_data.key == MLX_KEY_W && key_data.action == 0)
+	if (key_data.key == MLX_KEY_W && key_data.action == MLX_RELEASE)
 		data->player->vertical = 0;
-	else if (key_data.key == MLX_KEY_S && key_data.action == 0)
+	else if (key_data.key == MLX_KEY_S && key_data.action == MLX_RELEASE)
 		data->player->vertical = 0;
-	else if (key_data.key == MLX_KEY_D && key_data.action == 0)
+	else if (key_data.key == MLX_KEY_D && key_data.action == MLX_RELEASE)
 		data->player->horizontal = 0;
-	else if (key_data.key == MLX_KEY_A && key_data.action == 0)
+	else if (key_data.key == MLX_KEY_A && key_data.action == MLX_RELEASE)
 		data->player->horizontal = 0;
-	else if (key_data.key == MLX_KEY_RIGHT && key_data.action == 0)
+	else if (key_data.key == MLX_KEY_RIGHT && key_data.action == MLX_RELEASE)
 		data->player->rotation = 0;
-	else if (key_data.key == MLX_KEY_LEFT && key_data.action == 0)
+	else if (key_data.key == MLX_KEY_LEFT && key_data.action == MLX_RELEASE)
 		data->player->rotation = 0;
 }
+
 
 void	key_hook(mlx_key_data_t key_data, void *ptr)
 {
@@ -136,43 +139,33 @@ void	key_hook(mlx_key_data_t key_data, void *ptr)
 	re_init(key_data, data);
 }
 
-void	init_player(t_data *data)
+
+void init_player(t_data *data)
 {
-	data->player = (t_player *)ft_calloc(1, sizeof(t_player));
-	if (!data->player)
-		return(printf("ERROR: can't malloc memory for the player\n"), exit(0));
-    data->ray = malloc(sizeof(t_ray));
-    if (!data->ray)
-    {
-        fprintf(stderr, "Error: Failed to allocate memory for data->ray\n");
-        exit(1);
-    }
-	data->ray->hit = 0;
-	data->ray->perpWallDist = 0.0f;
-	data->ray->side = 0;
-		
-	data->player->radian_FOV = PLAYER_ANGEL * (3.1415 / 180);
-	data->player->x_p = (data->map->p_x * 32) + (32 / 2); 
-	data->player->y_p = (data->map->p_y * 32) + (32 / 2);
-	// if (data->map->p_p == 'N')
-	// 	data->player->angle = 3 * 3.1415 / 2;
-	// else if (data->map->p_p == 'S')
-	// 	data->player->angle = 3.1415 / 2;
-	// else if (data->map->p_p == 'W')
-	// 	data->player->angle = 3.1415;
-	// else if (data->map->p_p == 'E')
-	// 	data->player->angle = 0;
-	if (data->map->p_p == 'E')
-		data->player->angel = 0;
-	else if (data->map->p_p == 'N')
-		data->player->angel = 3.1415 / 2;
-	else if (data->map->p_p == 'W')
-		data->player->angel = 3.1415;
-	else if (data->map->p_p == 'S')
-		data->player->angel = 3 * (3.1415 / 2);
+    data->player = (t_player *)ft_calloc(1, sizeof(t_player));
+    if (!data->player)
+        return (printf("ERROR: can't malloc memory for the player\n"), exit(0));
+	data->ray = (t_ray *)ft_calloc(1, sizeof(t_ray));
+	if (!data->ray)
+	{
+		fprintf(stderr, "Error: Failed to allocate memory for data->ray\n");
+		exit(1);
+	}
+
+    data->player->x_p = (data->map->p_x * TILE_SIZE) + (TILE_SIZE / 2);
+    data->player->y_p = (data->map->p_y * TILE_SIZE) + (TILE_SIZE / 2);
+
+    if (data->map->p_p == 'E')
+        data->player->angel = 0;
+    else if (data->map->p_p == 'N')
+        data->player->angel = M_PI / 2;
+    else if (data->map->p_p == 'W')
+        data->player->angel = M_PI;
+    else if (data->map->p_p == 'S')
+        data->player->angel = 3 * (M_PI / 2);
+
     printf("Player initialized at position (%d, %d) with angle %f\n", data->player->x_p, data->player->y_p, data->player->angel);
 }
-
 void	game_loop(void *ptr)
 {
 	t_data	*data;

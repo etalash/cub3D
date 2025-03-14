@@ -6,7 +6,7 @@
 /*   By: maba <maba@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 03:48:31 by maba              #+#    #+#             */
-/*   Updated: 2025/03/13 15:55:11 by maba             ###   ########.fr       */
+/*   Updated: 2025/03/14 05:28:40 by maba             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,22 +38,22 @@ void draw_floor_ceiling(t_data *data, int x, int top_pixel, int bottom_pixel)
     i = 0;
     while (i < top_pixel)
         my_mlx_pixel_put(data, x, i++, data->map->ceiling_color);
-    printf("Drawing floor and ceiling at x: %d, top_pixel: %d, bottom_pixel: %d\n", x, top_pixel, bottom_pixel);
+    // printf("Drawing floor and ceiling at x: %d, top_pixel: %d, bottom_pixel: %d\n", x, top_pixel, bottom_pixel);
 }
 int get_color(t_data *data, int flag)
 {
     (void)data;
-    if (flag == 0) // Mur horizontal (Nord/Sud)
-        return (0xFF0000FF); // Rouge
-    else // Mur vertical (Est/Ouest)
-        return (0x0000FFFF); // Bleu
+    if (flag == 0) // Wall horizontal (Nord/Sud)
+        return (0xFF0000FF); //red
+    else // Wall vertical (Est/Ouest)
+        return (0x0000FFFF); // Blue
 }
 void draw_wall(t_data *data, int x, int top_pixel, int bottom_pixel)
 {
     int color;
 
     color = get_color(data, data->ray->side);
-    printf("Drawing wall at x: %d, top_pixel: %d, bottom_pixel: %d, color: %d\n", x, top_pixel, bottom_pixel, color);
+    // printf("Drawing wall at x: %d, top_pixel: %d, bottom_pixel: %d, color: %d\n", x, top_pixel, bottom_pixel, color);
     while (top_pixel < bottom_pixel)
         my_mlx_pixel_put(data, x, top_pixel++, color);
 }
@@ -66,22 +66,25 @@ void render_wall(t_data *data, int x)
     double corrected_dist;
 
     // Correction de la distorsion du fish-eye
-    corrected_dist = data->ray->perpWallDist * cos(data->player->angel - data->ray->rayDirX);
-    if (corrected_dist <= 0.01) // Évite les murs infinis
+    corrected_dist = data->ray->perpWallDist * cos(data->ray->cameraX);
+    if (corrected_dist < 0.1) // Évite les murs infinis
         corrected_dist = 0.1;
 
     // Calculer la hauteur du mur
-    wall_height = (TILE_SIZE / corrected_dist) * ((RES_X / 2) / tan(FOV / 2));
+    wall_height = (TILE_SIZE / corrected_dist) * ((double)RES_Y / (2 * tan(FOV / 2)));
+
+    // Déterminer où commence et où finit le mur sur l'écran
     bottom_pixel = (RES_Y / 2) + (wall_height / 2);
     top_pixel = (RES_Y / 2) - (wall_height / 2);
 
-    // Limiter la hauteur du mur à la taille de l'écran
+    // Limiter la hauteur du mur à l'écran
     if (bottom_pixel > RES_Y)
         bottom_pixel = RES_Y;
     if (top_pixel < 0)
         top_pixel = 0;
+    // Dessiner le mur
+    draw_wall(data, x, (int)top_pixel, (int)bottom_pixel);
 
-    printf("Rendering wall at x: %d, top_pixel: %f, bottom_pixel: %f\n", x, top_pixel, bottom_pixel);
-    draw_wall(data, x, top_pixel, bottom_pixel);
-    draw_floor_ceiling(data, x, top_pixel, bottom_pixel);
+    // Dessiner le sol et le plafond
+    draw_floor_ceiling(data, x, (int)top_pixel, (int)bottom_pixel);
 }
