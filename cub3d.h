@@ -6,7 +6,7 @@
 /*   By: maba <maba@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 13:46:41 by stalash           #+#    #+#             */
-/*   Updated: 2025/03/14 05:09:39 by maba             ###   ########.fr       */
+/*   Updated: 2025/03/15 02:33:44 by maba             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@
 # define MAP_WIDE_F 60
 # define MAP_HEIGHT_F 33
 # define SIZE_OF_IMAGE 33
-# define TILE_SIZE 32
+# define TILE_SIZE 30
 
 #define PLAYER_ANGEL 90
 #define MOVE_SPEED 4
@@ -65,7 +65,7 @@ typedef struct s_player
 	float posX, posY;  // Position du joueur
     float dirX, dirY;  // Vecteur de direction
     float planeX, planeY; // Plan de la caméra (pour le FOV)
-    float angle;       // Angle de rotation du joueur
+    // float angle;       // Angle de rotation du joueur
 }	t_player;
 
 
@@ -89,12 +89,14 @@ typedef struct s_map
 
 typedef struct s_ray
 {
-	float cameraX;     // Position de la caméra sur l'écran
-	float rayDirX, rayDirY; // Direction du rayon
+	float rayAngle;    // Angle du rayon
+	// float cameraX;     // Position de la caméra sur l'écran
+	// float rayDirX, rayDirY; // Direction du rayon
 	float perpWallDist; // Distance perpendiculaire au mur
 	int stepX, stepY;  // Direction du pas (1 ou -1)
 	int hit;           // Le rayon a-t-il touché un mur ?
 	int side;          // Mur touché (Nord/Sud ou Est/Ouest)
+	// int flag;
 } t_ray;
 
 typedef struct s_data
@@ -181,4 +183,5 @@ void draw_map(t_data *data);
 void add_until_wall(t_ray *ray, t_map *map);
 void	render_wall(t_data *data, int x);
 void init_data(t_data *data);
+float	nor_angle(float angle);
 #endif

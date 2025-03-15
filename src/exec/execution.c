@@ -6,7 +6,7 @@
 /*   By: maba <maba@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 18:33:38 by stalash           #+#    #+#             */
-/*   Updated: 2025/03/14 05:26:15 by maba             ###   ########.fr       */
+/*   Updated: 2025/03/15 06:54:47 by maba             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,15 +67,12 @@ void rotation(t_data *data, int rotate)
 }
 
 
-void put_hooks(t_data *data)
+void put_hooks(t_data *data, double x_position, double y_position)
 {
-    double x_position = 0;
-    double y_position = 0;
-
     if (data->player->rotation == 1)
         rotation(data, 1);
     if (data->player->rotation == -1)
-        rotation(data, -1);
+        rotation(data, 0);
     if (data->player->vertical == 1)
     {
         x_position = -cos(data->player->angel) * MOVE_SPEED;
@@ -145,40 +142,44 @@ void init_player(t_data *data)
     data->player = (t_player *)ft_calloc(1, sizeof(t_player));
     if (!data->player)
         return (printf("ERROR: can't malloc memory for the player\n"), exit(0));
-	data->ray = (t_ray *)ft_calloc(1, sizeof(t_ray));
-	if (!data->ray)
-	{
-		fprintf(stderr, "Error: Failed to allocate memory for data->ray\n");
-		exit(1);
-	}
+
+    data->ray = (t_ray *)ft_calloc(1, sizeof(t_ray));
+    if (!data->ray)
+    {
+        fprintf(stderr, "Error: Failed to allocate memory for data->ray\n");
+        exit(1);
+    }
 
     data->player->x_p = (data->map->p_x * TILE_SIZE) + (TILE_SIZE / 2);
     data->player->y_p = (data->map->p_y * TILE_SIZE) + (TILE_SIZE / 2);
+    data->player->radian_FOV = (FOV * M_PI) / 180;
 
+    // Initialisation de l'angle en fonction de l'orientation du joueur
     if (data->map->p_p == 'E')
-        data->player->angel = 0;
+        data->player->angel = 0; // Regarde vers l'est
     else if (data->map->p_p == 'N')
-        data->player->angel = M_PI / 2;
+        data->player->angel = M_PI / 2; // Regarde vers le nord
     else if (data->map->p_p == 'W')
-        data->player->angel = M_PI;
+        data->player->angel = M_PI; // Regarde vers l'ouest
     else if (data->map->p_p == 'S')
-        data->player->angel = 3 * (M_PI / 2);
+        data->player->angel = 3 * (M_PI / 2); // Regarde vers le sud
 
     printf("Player initialized at position (%d, %d) with angle %f\n", data->player->x_p, data->player->y_p, data->player->angel);
 }
-void	game_loop(void *ptr)
-{
-	t_data	*data;
 
-	data = (t_data *)ptr;
-	mlx_delete_image(data->mlx, data->win);
-	data->win = mlx_new_image(data->mlx, data->map->res_w, data->map->res_h);
-	if (!data->win)
-		return (printf("ERROR: can't open new image\n"), exit(0));
-	put_hooks(data);
-	draw_map(data); // Draw the player on the screen
-	raycast(data);
-	mlx_image_to_window(data->mlx, data->win, 0, 0);
+void game_loop(void *ptr)
+{
+    t_data *data = (t_data *)ptr;
+
+    mlx_delete_image(data->mlx, data->win);
+    data->win = mlx_new_image(data->mlx, data->map->res_w, data->map->res_h);
+    if (!data->win)
+        return (printf("ERROR: can't open new image\n"), exit(0));
+
+    put_hooks(data, 0, 0);
+    // draw_map(data); // Dessiner le sol et le plafond
+    raycast(data); // Raycasting pour dessiner les murs
+    mlx_image_to_window(data->mlx, data->win, 0, 0);
 }
 
 int	init_txt(t_data *data)
@@ -205,7 +206,7 @@ void	execution(t_data *data)
 	if (!init_txt(data))
 		return(deallocate_map(data), exit(1));
 	init_player(data);
-	mlx_key_hook(data->mlx, key_hook, data);
 	mlx_loop_hook(data->mlx, game_loop, data);
+	mlx_key_hook(data->mlx, key_hook, data);
 	mlx_loop(data->mlx);
 }
