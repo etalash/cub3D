@@ -1,7 +1,7 @@
-NO assets/texture/context_01.png
-EA assets/texture/plaster_brick_pattern.png
-WE assets/texture/brick_wall_09.png
-SO assets/texture/clay.png
+NO asset/texture/context_01.png
+EA asset/texture/plaster_brick_pattern.png
+WE asset/texture/brick_wall_09.png
+SO asset/texture/clay.png
 C 245,222,179
 F 135,206,235
 1111111111111111111111111

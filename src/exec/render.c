@@ -3,105 +3,132 @@
 /*                                                        :::      ::::::::   */
 /*   render.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maba <maba@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: stalash <stalash@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 03:48:31 by maba              #+#    #+#             */
-/*   Updated: 2025/03/15 06:52:05 by maba             ###   ########.fr       */
+/*   Updated: 2025/03/19 13:05:43 by stalash          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../cub3d.h"
 
-void my_mlx_pixel_put(t_data *data, int x, int y, int color)
+static double calculate_proj_distance(t_data *dt)
 {
-    if (x < 0 || x >= RES_X || y < 0 || y >= RES_Y)
-        return;
-    mlx_put_pixel(data->win, x, y, color);
+    return ((dt->map->res_w / 2.0) / tan(FOV * M_PI / 360.0));
 }
 
-float nor_angle(float angle)
+double calc_wall_height_1(t_data *dt)
 {
-    while (angle < 0)
-        angle += (2 * M_PI);
-    while (angle >= 2 * M_PI)
-        angle -= (2 * M_PI);
-    return angle;
+	double wall_height;
+
+	wall_height = (TILE_SIZE / dt->ray->perpWallDist) * calculate_proj_distance(dt); //(dt->map->res_w / 2);
+	return (wall_height);
 }
 
-void draw_floor_ceiling(t_data *data, int x, int top_pixel, int bottom_pixel)
+void draw_map(t_data *dt)
 {
-    int i;
+	int x;
+	int y;
+	int median;
 
-    // Draw the ceiling (above the wall)
-    i = 0;
-    while (i < top_pixel)
-        my_mlx_pixel_put(data, x, i++, data->map->ceiling_color);
-
-    // Draw the floor (below the wall)
-    i = bottom_pixel;
-    while (i < RES_Y)
-        my_mlx_pixel_put(data, x, i++, data->map->floor_color);
+	x = 0;
+	median = dt->map->res_h / 2;
+	while (x < dt->map->res_w)
+	{
+		y = 0;
+		while (y < median)
+		{
+			mlx_put_pixel(dt->win, x, y, dt->map->ceiling_color);
+			mlx_put_pixel(dt->win, x, dt->map->res_h - 1 - y, dt->map->floor_color);
+			y++;
+		}
+		x++;
+	}
 }
 
-int get_color(t_data *data, int flag)
+void my_pixel_put(t_data *dt, int x, int y, uint32_t color)
 {
-    data->ray->rayAngle = nor_angle(data->ray->rayAngle); // Normalize the angle
-
-    if (flag == 0) // Horizontal walls (North/South)
-    {
-        if (data->ray->rayAngle > M_PI / 2 && data->ray->rayAngle < 3 * (M_PI / 2))
-            return (0xB5B5B5FF); // West wall
-        else
-            return (0xF5F5F5FF); // East wall
-    }
-    else // Vertical walls (East/West)
-    {
-        if (data->ray->rayAngle > 0 && data->ray->rayAngle < M_PI)
-            return (0xFFAAAAFF); // South wall
-        else
-            return (0xAAAAFFFF); // North wall
-    }
+	if (x < 0 || x >= dt->map->res_w)
+		return;
+	if (y < 0 && y >= dt->map->res_h)
+		return;
+	mlx_put_pixel(dt->win, x, y, color);
 }
 
-void draw_wall(t_data *data, int x, int top_pixel, int bottom_pixel)
+void display_wall(t_data *dt, int top_pix, int bottom_pix, double wall_h)
 {
-    int color;
+	double x_o;
+	double y_o;
+	double factor;
+	uint32_t color;
 
-    color = get_color(data, data->ray->side);
-    while (top_pixel < bottom_pixel)
-        my_mlx_pixel_put(data, x, top_pixel++, color);
+	color = 0;
+	dt->text = set_texture(dt);
+	factor = (double)dt->text->height / wall_h;
+	if (dt->ray->flag == 1)
+		x_o = (int)fmod((dt->ray->stepX * (dt->text->width / TILE_SIZE)),
+						(dt->text->width));
+	else
+		x_o = (int)fmod((dt->ray->vert_y * (dt->text->width / TILE_SIZE)),
+						(dt->text->width));
+
+	// y_o = (top_pix - (dt->map->res_h / 2) + (wall_h / 2)) * factor;
+	// x_o = fmax(0, x_o);
+	// y_o = fmax(0, y_o);
+	// while (top_pix < bottom_pix)
+	// {
+	// 	color = ((uint32_t *)dt->text->pixels)[(int)y_o *
+	// 											   dt->text->width +
+	// 										   (int)x_o];
+	// 	my_pixel_put(dt, dt->ray->i, top_pix, reverse_bytes(color));
+	// 	y_o += factor;
+	// 	top_pix++;
+	// }
+	// Ensure x_o is within texture bounds
+	x_o = fmod(fabs(x_o), dt->text->width);
+
+	// Calculate initial y coordinate for texture mapping
+	y_o = (top_pix - (dt->map->res_h / 2) + (wall_h / 2)) * factor;
+
+	while (top_pix < bottom_pix)
+	{
+	    if (y_o >= 0 && y_o < dt->text->height)
+	    {
+	        color = ((uint32_t *)dt->text->pixels)[(int)y_o * dt->text->width + (int)x_o];
+	        my_pixel_put(dt, dt->ray->i, top_pix, reverse_bytes(color));
+	    }
+	    y_o += factor;
+	    top_pix++;
+	}
 }
 
-void render_wall(t_data *data, int x)
+void render_wall(t_data *dt, int ray)
 {
-    double wall_height;
-    double bottom_pixel;
-    double top_pixel;
+	double wall_h;
+	double bottom_pix;
+	double top_pix;
+	double angle_diff;
 
-    // Fix the fisheye distortion
-    double corrected_dist = data->ray->perpWallDist * cos(data->ray->rayAngle - data->player->angel);
-    if (corrected_dist <= 0.1) // Prevent division by zero
-        corrected_dist = 0.1;
+	// Calculate angle between ray and player direction for fish-eye correction
+	angle_diff = check_angle(dt->ray->rayAngle - dt->player->angle);
 
-    // Calculate the wall height
-    wall_height = (TILE_SIZE / corrected_dist) * ((double)RES_Y / (2 * tan(FOV / 2)));
+	// Apply fish-eye correction
+	dt->ray->perpWallDist *= cos(angle_diff);
 
-    // Determine where the wall starts and ends on the screen
-    bottom_pixel = (RES_Y / 2) + (wall_height / 2);
-    top_pixel = (RES_Y / 2) - (wall_height / 2);
+	// Calculate wall height with proper perspective
+	wall_h = calc_wall_height_1(dt);
 
-    // Clamp values to ensure they stay within screen boundaries
-    if (bottom_pixel > RES_Y)
-        bottom_pixel = RES_Y;
-    if (top_pixel < 0)
-        top_pixel = 0;
+	// Calculate wall position on screen
+	bottom_pix = (dt->map->res_h / 2.0) + (wall_h / 2.0);
+	top_pix = (dt->map->res_h / 2.0) - (wall_h / 2.0);
 
-    // Draw the wall
-    draw_wall(data, x, (int)top_pixel, (int)bottom_pixel);
-
-    // Draw the floor and ceiling only if the wall does not cover the entire height
-    if (top_pixel > 0 || bottom_pixel < RES_Y)
-    {
-        draw_floor_ceiling(data, x, (int)top_pixel, (int)bottom_pixel);
-    }
+	// if (bottom_pix > dt->map->res_h)
+	// 	bottom_pix = dt->map->res_h;
+	// if (top_pix < 0)
+	// 	top_pix = 0;
+	// Clamp values to screen boundaries
+	bottom_pix = fmin(bottom_pix, dt->map->res_h);
+	top_pix = fmax(top_pix, 0);
+	dt->ray->i = ray;
+	display_wall(dt, top_pix, bottom_pix, wall_h);
 }

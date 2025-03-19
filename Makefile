@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: maba <maba@student.42.fr>                  +#+  +:+       +#+         #
+#    By: stalash <stalash@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/31 13:17:27 by stalash           #+#    #+#              #
-#    Updated: 2025/03/13 16:54:38 by maba             ###   ########.fr        #
+#    Updated: 2025/03/18 12:33:40 by stalash          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -156,7 +156,8 @@ SRC_DIR = src
 SRCS = $(SRC_DIR)/parse/main.c $(SRC_DIR)/parse/free.c $(SRC_DIR)/parse/map_data.c \
 		$(SRC_DIR)/parse/parsing.c $(SRC_DIR)/parse/process_texture_color.c \
 		$(SRC_DIR)/parse/texture_color.c $(SRC_DIR)/parse/valid_map.c $(SRC_DIR)/exec/execution.c \
-		$(SRC_DIR)/exec/ray_cast.c $(SRC_DIR)/exec/render.c 
+		$(SRC_DIR)/exec/ray_cast.c $(SRC_DIR)/exec/render.c $(SRC_DIR)/exec/utils.c $(SRC_DIR)/exec/hooks.c \
+		$(SRC_DIR)/exec/move.c
 
 OBJ = $(SRCS:.c=.o)
 

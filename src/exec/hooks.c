@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   hooks.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maba <maba@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: stalash <stalash@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 16:56:54 by maba              #+#    #+#             */
-/*   Updated: 2025/03/04 15:49:04 by maba             ###   ########.fr       */
+/*   Updated: 2025/03/18 13:18:32 by stalash          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../cub3d.h"
+// #include "../../cub3d.h"
 
 // void key_press(mlx_key_data_t keydata, void *param)
 // {
@@ -66,3 +66,4 @@
 
 // 	// Implémenter le rendu de la frame complète (murs, minimap, etc.)
 // }
+

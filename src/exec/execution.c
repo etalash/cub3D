@@ -3,210 +3,94 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maba <maba@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: stalash <stalash@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 18:33:38 by stalash           #+#    #+#             */
-/*   Updated: 2025/03/15 06:54:47 by maba             ###   ########.fr       */
+/*   Updated: 2025/03/19 12:48:00 by stalash          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../cub3d.h"
 
-void	draw_map(t_data *data)
+void game_loop(void *pointer)
 {
-	int	x;
-	int	y;
-	int	median;
+	t_data *data;
 
-	x = 0;
-	median = data->map->res_h / 2;
-	while (x < data->map->res_w)
-	{
-		y = 0;
-		while (y < median)
-		{
-			mlx_put_pixel(data->win, x, y, data->map->ceiling_color);
-			mlx_put_pixel(data->win, x, data->map->res_h \
-				- 1 - y, data->map->floor_color);
-			y++;
-		}
-		x++;
-	}
+	data = (t_data *)pointer;
+	mlx_delete_image(data->mlx, data->win);
+	data->win = mlx_new_image(data->mlx, data->map->res_w, data->map->res_h);
+	if (!data->win)
+		return ;
+	hook(data, 0, 0);
+	draw_map(data);
+	raycast(data);
+	mlx_image_to_window(data->mlx, data->win, 0, 0);
 }
 
-void move_player(t_data *data, double move_x, double move_y)
+int init_texture(t_data *dt)
 {
-    int p_x;
-    int p_y;
-
-    p_x = (int)(data->player->x_p + move_x) / TILE_SIZE;
-    p_y = (int)(data->player->y_p + move_y) / TILE_SIZE;
-    if (data->map->map_cub[p_y][p_x] != '1')
-    {
-        data->player->x_p += move_x;
-        data->player->y_p += move_y;
-    }
+	if (!(dt->north = mlx_load_png(dt->map->nord)))
+		return (ft_printf("Error loading north texture\n"), 1);
+	if (!(dt->south = mlx_load_png(dt->map->south)))
+		return (ft_printf("Error loading south texture\n"), 1);
+	if (!(dt->east = mlx_load_png(dt->map->east)))
+		return (ft_printf("Error loading east texture\n"), 1);
+	if (!(dt->west = mlx_load_png(dt->map->west)))
+		return (ft_printf("Error loading west texture\n"), 1);
+	return (0);
 }
-
-
-
-void rotation(t_data *data, int rotate)
-{
-    if (rotate == 1)
-    {
-        data->player->angel += 2 * (M_PI / 180); // Rotation right
-        if (data->player->angel > (2 * M_PI))
-            data->player->angel -= (2 * M_PI);
-    }
-    else
-    {
-        data->player->angel -= 2 * (M_PI / 180); // Rotation left
-        if (data->player->angel < 0)
-            data->player->angel += (2 * M_PI);
-    }
-}
-
-
-void put_hooks(t_data *data, double x_position, double y_position)
-{
-    if (data->player->rotation == 1)
-        rotation(data, 1);
-    if (data->player->rotation == -1)
-        rotation(data, 0);
-    if (data->player->vertical == 1)
-    {
-        x_position = -cos(data->player->angel) * MOVE_SPEED;
-        y_position = -sin(data->player->angel) * MOVE_SPEED;
-    }
-    if (data->player->vertical == -1)
-    {
-        x_position = cos(data->player->angel) * MOVE_SPEED;
-        y_position = sin(data->player->angel) * MOVE_SPEED;
-    }
-    if (data->player->horizontal == 1)
-    {
-        x_position = -sin(data->player->angel) * MOVE_SPEED;
-        y_position = cos(data->player->angel) * MOVE_SPEED;
-    }
-    if (data->player->horizontal == -1)
-    {
-        x_position = sin(data->player->angel) * MOVE_SPEED;
-        y_position = -cos(data->player->angel) * MOVE_SPEED;
-    }
-    move_player(data, x_position, y_position);
-}
-
-
-void	re_init(mlx_key_data_t key_data, t_data *data)
-{
-	if (key_data.key == MLX_KEY_W && key_data.action == MLX_RELEASE)
-		data->player->vertical = 0;
-	else if (key_data.key == MLX_KEY_S && key_data.action == MLX_RELEASE)
-		data->player->vertical = 0;
-	else if (key_data.key == MLX_KEY_D && key_data.action == MLX_RELEASE)
-		data->player->horizontal = 0;
-	else if (key_data.key == MLX_KEY_A && key_data.action == MLX_RELEASE)
-		data->player->horizontal = 0;
-	else if (key_data.key == MLX_KEY_RIGHT && key_data.action == MLX_RELEASE)
-		data->player->rotation = 0;
-	else if (key_data.key == MLX_KEY_LEFT && key_data.action == MLX_RELEASE)
-		data->player->rotation = 0;
-}
-
-
-void	key_hook(mlx_key_data_t key_data, void *ptr)
-{
-	t_data	*data;
-
-	data = (t_data *)ptr;
-	if (key_data.key == MLX_KEY_ESCAPE && key_data.action == 1)
-		mlx_close_window(data->mlx);
-	else if (key_data.key == MLX_KEY_W && key_data.action == 1)
-		data->player->vertical = -1;
-	else if (key_data.key == MLX_KEY_S && key_data.action == 1)
-		data->player->vertical = 1;
-	else if (key_data.key == MLX_KEY_D && key_data.action == 1)
-		data->player->horizontal = 1;
-	else if (key_data.key == MLX_KEY_A && key_data.action == 1)
-		data->player->horizontal = -1;
-	else if (key_data.key == MLX_KEY_RIGHT && key_data.action == 1)
-		data->player->rotation = 1;
-	else if (key_data.key == MLX_KEY_LEFT && key_data.action == 1)
-		data->player->rotation = -1;
-	re_init(key_data, data);
-}
-
 
 void init_player(t_data *data)
 {
-    data->player = (t_player *)ft_calloc(1, sizeof(t_player));
-    if (!data->player)
-        return (printf("ERROR: can't malloc memory for the player\n"), exit(0));
-
-    data->ray = (t_ray *)ft_calloc(1, sizeof(t_ray));
-    if (!data->ray)
-    {
-        fprintf(stderr, "Error: Failed to allocate memory for data->ray\n");
-        exit(1);
-    }
-
-    data->player->x_p = (data->map->p_x * TILE_SIZE) + (TILE_SIZE / 2);
-    data->player->y_p = (data->map->p_y * TILE_SIZE) + (TILE_SIZE / 2);
-    data->player->radian_FOV = (FOV * M_PI) / 180;
-
-    // Initialisation de l'angle en fonction de l'orientation du joueur
-    if (data->map->p_p == 'E')
-        data->player->angel = 0; // Regarde vers l'est
-    else if (data->map->p_p == 'N')
-        data->player->angel = M_PI / 2; // Regarde vers le nord
-    else if (data->map->p_p == 'W')
-        data->player->angel = M_PI; // Regarde vers l'ouest
-    else if (data->map->p_p == 'S')
-        data->player->angel = 3 * (M_PI / 2); // Regarde vers le sud
-
-    printf("Player initialized at position (%d, %d) with angle %f\n", data->player->x_p, data->player->y_p, data->player->angel);
+	data->player = malloc(sizeof(t_player));
+	if (!data->player)
+		return ;
+	data->player->rotation = 0;
+	data->player->horizontal = 0;
+	data->player->vertical = 0;
+	data->player->posX = (data->map->p_x * TILE_SIZE) + (TILE_SIZE / 2);
+	data->player->posY = (data->map->p_y * TILE_SIZE) + (TILE_SIZE / 2);
+	if (data->map->p_p == 'N')
+		data->player->angle = 3 * M_PI / 2;
+	else if (data->map->p_p == 'S')
+		data->player->angle = M_PI / 2;
+	else if (data->map->p_p == 'W')
+		data->player->angle = M_PI;
+	else if (data->map->p_p == 'E')
+		data->player->angle = 0;
+	data->ray = ft_calloc(1, sizeof(t_ray));
+	if (!data->ray)
+		return ;
 }
 
-void game_loop(void *ptr)
+void execution(t_data *data)
 {
-    t_data *data = (t_data *)ptr;
-
-    mlx_delete_image(data->mlx, data->win);
-    data->win = mlx_new_image(data->mlx, data->map->res_w, data->map->res_h);
-    if (!data->win)
-        return (printf("ERROR: can't open new image\n"), exit(0));
-
-    put_hooks(data, 0, 0);
-    // draw_map(data); // Dessiner le sol et le plafond
-    raycast(data); // Raycasting pour dessiner les murs
-    mlx_image_to_window(data->mlx, data->win, 0, 0);
-}
-
-int	init_txt(t_data *data)
-{
-	if (!(data->nord = mlx_load_png(data->map->nord)))
-		return (printf("ERROR: can't init nord txt\n"), 0);
-	if (!(data->south = mlx_load_png(data->map->south)))
-		return (printf("ERROR: can't init south txt\n"), 0);
-	if (!(data->east = mlx_load_png(data->map->east)))
-		return (printf("ERROR: can't init east txt\n"), 0);
-	if (!(data->west = mlx_load_png(data->map->west)))
-		return (printf("ERROR: can't init west txt\n"), 0);
-	return (1);
-}
-
-void	execution(t_data *data)
-{
-	data->mlx = mlx_init(data->map->res_w, data->map->res_h, "Cub3D ", 0);
+	data->mlx = mlx_init(data->map->res_w, data->map->res_h, "Cub3D", false);
 	if (!data->mlx)
-	{
-		printf("ERROR: can't init mlx\n");
-		return(deallocate_map(data), exit(1));
-	}
-	if (!init_txt(data))
-		return(deallocate_map(data), exit(1));
+		return (ft_printf("Error initializing MLX\n"), exit(1));
+	if (init_texture(data))
+		return (mlx_terminate(data->mlx), exit(1));
 	init_player(data);
-	mlx_loop_hook(data->mlx, game_loop, data);
+	if (!data->player || !data->ray)
+		return (mlx_terminate(data->mlx), exit(1));
 	mlx_key_hook(data->mlx, key_hook, data);
+	mlx_loop_hook(data->mlx, game_loop, data);
 	mlx_loop(data->mlx);
+
+	// should be freed after every time. we'll make another funtion for it
+	mlx_delete_image(data->mlx, data->win);
+	if (data->text)
+		mlx_delete_texture(data->text);
+	if (data->east)
+		mlx_delete_texture(data->east);
+	if (data->west)
+		mlx_delete_texture(data->west);
+	if (data->north)
+		mlx_delete_texture(data->north);
+	if (data->south)
+		mlx_delete_texture(data->south);
+	free(data->ray);
+	free(data->player);
+	// // Cleanup resources
+	// mlx_terminate(dt->mlx);
 }

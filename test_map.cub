@@ -1,12 +1,9 @@
-NO textures/Mona_Lisa.png
-SO textures/Wheat_Field.png
-WE textures/the_starry_night.png
-EA textures/girl_with_a_pearl_earring.png
-
+NO asset/texture/brick_wall_09.png
+SO asset/texture/clay.png
+WE asset/texture/context_01.png
+EA asset/texture/plaster_brick_pattern.png
 C 0,0,33
 F 60,179,110
-
-
 11111111111111111111111111
 100000000011000S0000000011
 10110000011100000000000011
