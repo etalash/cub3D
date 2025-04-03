@@ -3,34 +3,42 @@
 /*                                                        :::      ::::::::   */
 /*   texture_color.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stalash <stalash@student.42.fr>            +#+  +:+       +#+        */
+/*   By: maba <maba@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 17:28:17 by stalash           #+#    #+#             */
-/*   Updated: 2025/02/23 16:54:46 by stalash          ###   ########.fr       */
+/*   Updated: 2025/04/03 07:01:25 by maba             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../cub3d.h"
 
-int check_map_line(t_data data)
+int	check_map_line(t_data data)
 {
-	int i, j;
+	int	i;
+	int	j;
 
-	for (i = 0; i < data.map->m_h; i++)
+	i = 0;
+	while (i < data.map->m_h)
 	{
-		for (j = 0; j < data.map->m_w; j++)
+		j = 0;
+		while (j < data.map->m_w)
 		{
 			if (!is_valid_map_char(data.map->map_cub[i][j]))
-				return (printf("Invalid character in map at (%d, %d)\n", i, j), -1);
+				return (printf("Invalid character in map at (%d, %d)\n", i, j),
+					-1);
+			j++;
 		}
+		i++;
 	}
 	return (0);
 }
 
-char *remove_whitespace(char *line)
+char	*remove_whitespace(char *line)
 {
-	int i, len, length;
-	char *retrieved_line;
+	char	*retrieved_line;
+	int		i;
+	int		len;
+	int		length;
 
 	i = 0;
 	if (line == NULL)
@@ -50,10 +58,10 @@ char *remove_whitespace(char *line)
 	return (retrieved_line);
 }
 
-char *refrctoring_line(int fd)
+char	*refrctoring_line(int fd)
 {
-	char *line;
-	char *refrctored_line;
+	char	*line;
+	char	*refrctored_line;
 
 	while (1)
 	{
@@ -65,49 +73,102 @@ char *refrctoring_line(int fd)
 		if (!refrctored_line || *refrctored_line == '\0')
 		{
 			free(refrctored_line);
-			continue;
+			continue ;
 		}
 		return (refrctored_line);
 	}
 }
 
-char *retrieve_texture_and_color(int fd, t_data data)
+// char	*retrieve_texture_and_color(int fd, t_data data)
+// {
+// 	char	*colors;
+// 	int		result;
+// 	int		map_started;
+
+// 	map_started = 0;
+// 	result = 0;
+// 	while (1)
+// 	{
+// 		colors = refrctoring_line(fd);
+// 		if (!colors)
+// 			break ;
+// 		if (map_started)
+// 		{
+// 			free(colors);
+// 			printf("ERROR : Map content must be the last element.\n");
+// 			return (NULL);
+// 		}
+// 		result = process_map_line(colors, data);
+// 		if (result == -1)
+// 		{
+// 			free(colors);
+// 			printf("ERROR : Invalid texture path or color format.\n");
+// 			break ;
+// 		}
+// 		else if (result == 1)
+// 		{
+// 			if (check_map_line(data) == -1)
+// 			{
+// 				free(colors);
+// 				printf("ERROR : Invalid map line.\n");
+// 				break ;
+// 			}
+// 			else
+// 				return (colors);
+// 		}
+// 		free(colors);
+// 	}
+// 	printf("ERROR : Provided map data is invalid\n");
+// 	return (NULL);
+// }
+
+static int	process_texture_or_map(char *colors, t_data data, int *map_started)
 {
-	char *colors;
-	int result;
-	int	map_started;
+	int	result;
+
+	result = process_map_line(colors, data);
+	if (result == -1)
+	{
+		free(colors);
+		printf("ERROR : Invalid texture path or color format.\n");
+		return (-1);
+	}
+	else if (result == 1)
+	{
+		if (check_map_line(data) == -1)
+		{
+			free(colors);
+			printf("ERROR : Invalid map line.\n");
+			return (-1);
+		}
+		*map_started = 1;
+	}
+	return (result);
+}
+
+char	*retrieve_texture_and_color(int fd, t_data data)
+{
+	char	*colors;
+	int		result;
+	int		map_started;
 
 	map_started = 0;
-	result = 0;
 	while (1)
 	{
 		colors = refrctoring_line(fd);
 		if (!colors)
-			break;
+			break ;
 		if (map_started)
 		{
 			free(colors);
 			printf("ERROR : Map content must be the last element.\n");
 			return (NULL);
 		}
-		result = process_map_line(colors, data);
+		result = process_texture_or_map(colors, data, &map_started);
 		if (result == -1)
-		{
-			free(colors);
-			printf("ERROR : Invalid texture path or color format.\n");
-			break;
-		}
+			break ;
 		else if (result == 1)
-		{
-			if (check_map_line(data) == -1)
-			{
-				free(colors);
-				printf("ERROR : Invalid map line.\n");
-				break;
-			}
-			else
-				return (colors);
-		}
+			return (colors);
 		free(colors);
 	}
 	printf("ERROR : Provided map data is invalid\n");

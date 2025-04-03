@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stalash <stalash@student.42.fr>            +#+  +:+       +#+        */
+/*   By: maba <maba@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 18:33:38 by stalash           #+#    #+#             */
-/*   Updated: 2025/03/19 12:48:00 by stalash          ###   ########.fr       */
+/*   Updated: 2025/04/03 06:36:30 by maba             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../cub3d.h"
 
-void game_loop(void *pointer)
+void	game_loop(void *pointer)
 {
-	t_data *data;
+	t_data	*data;
 
 	data = (t_data *)pointer;
 	mlx_delete_image(data->mlx, data->win);
@@ -27,20 +27,49 @@ void game_loop(void *pointer)
 	mlx_image_to_window(data->mlx, data->win, 0, 0);
 }
 
-int init_texture(t_data *dt)
+// int	init_texture(t_data *dt)
+// {
+// 	if (!(dt->north = mlx_load_png(dt->map->nord)))
+// 		return (ft_printf("Error loading north texture\n"), 1);
+// 	if (!(dt->south = mlx_load_png(dt->map->south)))
+// 		return (ft_printf("Error loading south texture\n"), 1);
+// 	if (!(dt->east = mlx_load_png(dt->map->east)))
+// 		return (ft_printf("Error loading east texture\n"), 1);
+// 	if (!(dt->west = mlx_load_png(dt->map->west)))
+// 		return (ft_printf("Error loading west texture\n"), 1);
+// 	return (0);
+// }
+
+int	init_texture(t_data *dt)
 {
-	if (!(dt->north = mlx_load_png(dt->map->nord)))
-		return (ft_printf("Error loading north texture\n"), 1);
-	if (!(dt->south = mlx_load_png(dt->map->south)))
-		return (ft_printf("Error loading south texture\n"), 1);
-	if (!(dt->east = mlx_load_png(dt->map->east)))
-		return (ft_printf("Error loading east texture\n"), 1);
-	if (!(dt->west = mlx_load_png(dt->map->west)))
-		return (ft_printf("Error loading west texture\n"), 1);
+	dt->north = mlx_load_png(dt->map->nord);
+	if (!dt->north)
+	{
+		ft_printf("Error loading north texture\n");
+		return (1);
+	}
+	dt->south = mlx_load_png(dt->map->south);
+	if (!dt->south)
+	{
+		ft_printf("Error loading south texture\n");
+		return (1);
+	}
+	dt->east = mlx_load_png(dt->map->east);
+	if (!dt->east)
+	{
+		ft_printf("Error loading east texture\n");
+		return (1);
+	}
+	dt->west = mlx_load_png(dt->map->west);
+	if (!dt->west)
+	{
+		ft_printf("Error loading west texture\n");
+		return (1);
+	}
 	return (0);
 }
 
-void init_player(t_data *data)
+void	init_player(t_data *data)
 {
 	data->player = malloc(sizeof(t_player));
 	if (!data->player)
@@ -63,7 +92,7 @@ void init_player(t_data *data)
 		return ;
 }
 
-void execution(t_data *data)
+void	execution(t_data *data)
 {
 	data->mlx = mlx_init(data->map->res_w, data->map->res_h, "Cub3D", false);
 	if (!data->mlx)
@@ -76,8 +105,6 @@ void execution(t_data *data)
 	mlx_key_hook(data->mlx, key_hook, data);
 	mlx_loop_hook(data->mlx, game_loop, data);
 	mlx_loop(data->mlx);
-
-	// should be freed after every time. we'll make another funtion for it
 	mlx_delete_image(data->mlx, data->win);
 	if (data->text)
 		mlx_delete_texture(data->text);
@@ -91,6 +118,4 @@ void execution(t_data *data)
 		mlx_delete_texture(data->south);
 	free(data->ray);
 	free(data->player);
-	// // Cleanup resources
-	// mlx_terminate(dt->mlx);
 }
