@@ -6,22 +6,22 @@
 /*   By: stalash <stalash@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 03:48:31 by maba              #+#    #+#             */
-/*   Updated: 2025/04/02 23:28:31 by stalash          ###   ########.fr       */
+/*   Updated: 2025/04/04 19:18:50 by stalash          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../cub3d.h"
 
-static double calculate_proj_distance(t_data *dt)
-{
-    return ((dt->map->res_w / 2.0) / tan(FOV * M_PI / 360.0));
-}
+// static double calculate_proj_distance(t_data *dt)
+// {
+//     return ((dt->map->res_w / 2.0) / tan(FOV * M_PI / 360.0));
+// }
 
 double calc_wall_height_1(t_data *dt)
 {
 	double wall_height;
 
-	wall_height = (TILE_SIZE / dt->ray->perpWallDist) * calculate_proj_distance(dt); //(dt->map->res_w / 2);
+	wall_height = (TILE_SIZE / dt->ray->perpWallDist) * (dt->map->res_w / 2);//calculate_proj_distance(dt); //(dt->map->res_w / 2);
 	return (wall_height);
 }
 
