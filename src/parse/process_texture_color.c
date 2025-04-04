@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   process_texture_color.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maba <maba@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: stalash <stalash@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 17:29:41 by stalash           #+#    #+#             */
-/*   Updated: 2025/04/03 06:00:59 by maba             ###   ########.fr       */
+/*   Updated: 2025/02/23 16:55:42 by stalash          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../cub3d.h"
 
-int	count_tokens(char **tokens)
+int count_tokens(char **tokens)
 {
-	int	i;
+	int i;
 
 	i = 0;
 	while (tokens[i])
@@ -26,32 +26,28 @@ int	count_tokens(char **tokens)
 	return (0);
 }
 
-uint32_t	set_color(char *line)
+uint32_t set_color(char *line)
 {
-	char	**tokens;
-	int		red;
-	int		green;
-	int		blue;
+	char **tokens;
+	int red, green, blue;
 
 	tokens = ft_split(line, ',');
 	if (!tokens)
 		return (-1);
 	if (count_tokens(tokens) == 1)
 		return (free_tokens(tokens), -1);
-	if (ft_isnumber(tokens[0]) || ft_isnumber(tokens[1])
-		|| ft_isnumber(tokens[2]))
+	if (ft_isnumber(tokens[0]) || ft_isnumber(tokens[1]) || ft_isnumber(tokens[2]))
 		return (free_tokens(tokens), -1);
 	red = ft_atoi(tokens[0]);
 	green = ft_atoi(tokens[1]);
 	blue = ft_atoi(tokens[2]);
 	free_tokens(tokens);
-	if (red < 0 || red > 255 || green < 0 || green > 255 || blue < 0
-		|| blue > 255)
+	if (red < 0 || red > 255 || green < 0 || green > 255 || blue < 0 || blue > 255)
 		return (-1);
 	return ((red << 16) | (green << 8) | blue);
 }
 
-int	process_color_line(char *line, t_data data, int *found)
+int process_color_line(char *line, t_data data, int *found)
 {
 	if ((strncmp(line, "F ", 2) == 0) && !found[4])
 	{
@@ -68,7 +64,7 @@ int	process_color_line(char *line, t_data data, int *found)
 	return (-1);
 }
 
-int	process_texture_line(char *line, t_data data, int *found)
+int process_texture_line(char *line, t_data data, int *found)
 {
 	if ((strncmp(line, "NO ", 3) == 0) && !found[0])
 	{
@@ -97,9 +93,9 @@ int	process_texture_line(char *line, t_data data, int *found)
 	return (-1);
 }
 
-int	process_map_line(char *line, t_data data)
+int process_map_line(char *line, t_data data)
 {
-	static int	result[6] = {0};
+	static int result[6] = {0};
 
 	if (line[0] == '1')
 		return (1);

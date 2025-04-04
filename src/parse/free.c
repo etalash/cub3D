@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maba <maba@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: stalash <stalash@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 18:17:01 by stalash           #+#    #+#             */
-/*   Updated: 2025/04/03 05:45:29 by maba             ###   ########.fr       */
+/*   Updated: 2025/04/02 22:58:52 by stalash          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../cub3d.h"
 
-void	free_tokens(char **tokens)
+void free_tokens(char **tokens)
 {
-	int	i;
+	int i;
 
 	i = 0;
 	while (i < 3)
@@ -25,60 +25,89 @@ void	free_tokens(char **tokens)
 	free(tokens);
 }
 
-void	deallocate_map(t_data *data)
+void deallocate_map(t_data *data)
 {
-	int	i;
-
 	if (!data->map)
-		return ;
+		return;
+
 	if (data->map->map_cub)
 	{
-		i = 0;
-		while (i < MAP_HEIGHT)
+		for (int i = 0; i < MAP_HEIGHT; i++)
 		{
 			free(data->map->map_cub[i]);
-			i++;
 		}
 		free(data->map->map_cub);
 		data->map->map_cub = NULL;
 	}
+
 	free(data->map->nord);
 	free(data->map->south);
 	free(data->map->east);
 	free(data->map->west);
-	free(data->ray);
-	data->ray = NULL;
+	// free(data->ray);
+	// data->ray = NULL;
+
+
 	data->map->nord = NULL;
 	data->map->south = NULL;
 	data->map->east = NULL;
 	data->map->west = NULL;
 }
 
-void	cleanup(t_data *data)
+void cleanup(t_data *data)
 {
-	if (data->player)
-		free(data->player);
-	if (data->map)
-	{
-		deallocate_map(data);
-		free(data->map);
-	}
-	if (data->mlx && data->win)
-		mlx_delete_image(data->mlx, data->win);
-	if (data->mlx)
-		mlx_terminate(data->mlx);
+    if (!data)
+        return;
+        
+    // Clean up textures
+    if (data->north)
+        mlx_delete_texture(data->north);
+    if (data->south) 
+        mlx_delete_texture(data->south);
+    if (data->east)
+        mlx_delete_texture(data->east);
+    if (data->west)
+        mlx_delete_texture(data->west);
+    // if (data->text)
+    //     mlx_delete_texture(data->text);
+
+    // Clean up window/image
+    if (data->win)
+        mlx_delete_image(data->mlx, data->win);
+
+    // Clean up MLX
+    if (data->mlx)
+    {
+        mlx_terminate(data->mlx);
+        data->mlx = NULL;
+    }
+
+    // Clean up player
+    if (data->player)
+    {
+        free(data->player);
+        data->player = NULL;
+    }
+
+    // Clean up ray
+    if (data->ray)
+    {
+        free(data->ray);
+        data->ray = NULL;
+    }
 }
 
-void	free_sub_map(char **map)
+void free_sub_map(char **map)
 {
-	int	i;
+    int i;
 
-	i = 0;
-	while (map[i][0])
-	{
-		free(map[i]);
-		map[i] = NULL;
-		i++;
-	}
-	free(map);
+    if (!map)
+        return;
+        
+    for (i = 0; i < MAP_HEIGHT; i++)
+    {
+        if (map[i])
+            free(map[i]);
+    }
+    free(map);
 }

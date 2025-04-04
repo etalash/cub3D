@@ -3,26 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maba <maba@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: stalash <stalash@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 14:04:33 by stalash           #+#    #+#             */
-/*   Updated: 2025/04/03 05:38:57 by maba             ###   ########.fr       */
+/*   Updated: 2025/04/02 22:58:23 by stalash          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../cub3d.h"
 
-void	init_data(t_data *data)
+void init_ray(t_data *data)
 {
-	data->ray = malloc(sizeof(t_ray));
-	if (!data->ray)
-	{
-		fprintf(stderr, "Error: Failed to allocate memory for data->ray\n");
-		exit(1);
-	}
+    data->ray = malloc(sizeof(t_ray));
+    if (!data->ray)
+    {
+        printf("Error: Failed to allocate memory for data->ray\n");
+        exit(1);
+    }
 }
 
-void	init_map(t_map *map)
+void init_map(t_map *map)
 {
 	map->nord = NULL;
 	map->south = NULL;
@@ -40,10 +40,10 @@ void	init_map(t_map *map)
 	map->ceiling_color = 0x000000;
 }
 
-int	main(int argc, char **argv)
+int main(int argc, char **argv)
 {
-	t_map	map;
-	t_data	data;
+	t_map map;
+	t_data data;
 
 	if (argc != 2 || !argv[1][0])
 		return (ft_printf("ERROR : Not enough arguments\n"), 0);
@@ -53,5 +53,6 @@ int	main(int argc, char **argv)
 	mlx_set_setting(MLX_STRETCH_IMAGE, true);
 	execution(&data);
 	deallocate_map(&data);
+	cleanup(&data);
 	return (0);
 }
