@@ -6,7 +6,7 @@
 #    By: maba <maba@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/31 13:17:27 by stalash           #+#    #+#              #
-#    Updated: 2025/04/07 04:15:22 by maba             ###   ########.fr        #
+#    Updated: 2025/05/05 01:22:55 by maba             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,9 +18,9 @@ NAME = cub3D
 SRC_DIR = src
 SRCS = $(SRC_DIR)/parse/main.c $(SRC_DIR)/parse/free.c $(SRC_DIR)/parse/map_data.c \
 		$(SRC_DIR)/parse/parsing.c $(SRC_DIR)/parse/process_texture_color.c \
-		$(SRC_DIR)/parse/texture_color.c $(SRC_DIR)/parse/valid_map.c $(SRC_DIR)/exec/execution.c \
-		$(SRC_DIR)/exec/ray_cast.c $(SRC_DIR)/exec/render.c $(SRC_DIR)/exec/utils.c \
-		$(SRC_DIR)/exec/move.c
+		$(SRC_DIR)/parse/texture_color.c $(SRC_DIR)/parse/valid_map.c $(SRC_DIR)/exec/simul.c \
+		$(SRC_DIR)/exec/raycasting.c $(SRC_DIR)/exec/rendering.c $(SRC_DIR)/exec/utils.c $(SRC_DIR)/exec/init.c \
+		$(SRC_DIR)/exec/hooks.c
 
 OBJ = $(SRCS:.c=.o)
 

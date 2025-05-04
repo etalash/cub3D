@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stalash <stalash@student.42.fr>            +#+  +:+       +#+        */
+/*   By: maba <maba@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 18:17:01 by stalash           #+#    #+#             */
-/*   Updated: 2025/04/07 22:42:32 by stalash          ###   ########.fr       */
+/*   Updated: 2025/05/05 01:12:18 by maba             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,40 +83,40 @@ void	deallocate_map(t_data *data)
 // 	}
 // }
 
-void	cleanup_mlx_and_textures(t_data *data)
-{
-	if (data->north)
-		mlx_delete_texture(data->north);
-	if (data->south)
-		mlx_delete_texture(data->south);
-	if (data->east)
-		mlx_delete_texture(data->east);
-	if (data->west)
-		mlx_delete_texture(data->west);
-	if (data->win)
-		mlx_delete_image(data->mlx, data->win);
-	if (data->mlx)
-	{
-		mlx_terminate(data->mlx);
-		data->mlx = NULL;
-	}
-}
+// void	cleanup_mlx_and_textures(t_data *data)
+// {
+// 	if (data->north)
+// 		mlx_delete_texture(data->north);
+// 	if (data->south)
+// 		mlx_delete_texture(data->south);
+// 	if (data->east)
+// 		mlx_delete_texture(data->east);
+// 	if (data->west)
+// 		mlx_delete_texture(data->west);
+// 	if (data->win)
+// 		mlx_delete_image(data->mlx, data->win);
+// 	if (data->mlx)
+// 	{
+// 		mlx_terminate(data->mlx);
+// 		data->mlx = NULL;
+// 	}
+// }
 
 void	cleanup(t_data *data)
 {
 	if (!data)
 		return ;
-	cleanup_mlx_and_textures(data);
+	// cleanup_mlx_and_textures(data);
 	if (data->player)
 	{
 		free(data->player);
 		data->player = NULL;
 	}
-	if (data->ray)
-	{
-		free(data->ray);
-		data->ray = NULL;
-	}
+	// if (data->ray)
+	// {
+	// 	free(data->ray);
+	// 	data->ray = NULL;
+	// }
 }
 
 void	free_sub_map(char **map)
