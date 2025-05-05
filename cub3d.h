@@ -6,7 +6,7 @@
 /*   By: maba <maba@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 13:46:41 by stalash           #+#    #+#             */
-/*   Updated: 2025/05/05 01:38:42 by maba             ###   ########.fr       */
+/*   Updated: 2025/05/05 02:02:53 by maba             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,12 +42,12 @@
 # define PLAYER_SPEED 4
 # define TILE 32
 
-typedef struct s_image
-{
-	mlx_image_t		*background;
-	mlx_image_t		*wall;
-	mlx_image_t		*player;
-}					t_image;
+// typedef struct s_image
+// {
+// 	mlx_image_t		*background;
+// 	mlx_image_t		*wall;
+// 	mlx_image_t		*player;
+// }					t_image;
 
 typedef struct s_player
 {
@@ -83,6 +83,7 @@ typedef struct s_data
 {
 	mlx_t			*mlx;
 	mlx_image_t		*win;
+	mlx_image_t		*img;
 	t_player		*player;
 	t_map			*map;
 	int				pixel;
@@ -120,7 +121,7 @@ void				cleanup(t_data *data);
 void				free_sub_map(char **map);
 
 // ************* EXECUTION ************/
-
+void init_game(t_data *data);
 // ************** Raycasting ***********************
 
 

@@ -6,7 +6,7 @@
 /*   By: maba <maba@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 14:04:33 by stalash           #+#    #+#             */
-/*   Updated: 2025/05/05 01:15:32 by maba             ###   ########.fr       */
+/*   Updated: 2025/05/05 02:07:30 by maba             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,8 @@ int	main(int argc, char **argv)
 	parsing(argv[1], &data);
 	mlx_set_setting(MLX_STRETCH_IMAGE, true);
 	// execution(&data);
+	init_game(&data);
+	mlx_loop(data.mlx);
 	deallocate_map(&data);
 	cleanup(&data);
 	return (0);
