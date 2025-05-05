@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maba <maba@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: stalash <stalash@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 14:04:33 by stalash           #+#    #+#             */
-/*   Updated: 2025/05/05 02:07:30 by maba             ###   ########.fr       */
+/*   Updated: 2025/05/05 18:41:15 by stalash          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	check_contex_map(t_data data, t_map_info map_info, char **map)
 {
-	if (!check_walls(data, map_info.map_height, map_info.map_width))
+	if (!check_walls(data, map_info.map_height))
 		return (printf(RED"ERROR: map is not surrounded by walls\n"RESET), \
 				free_sub_map(map), 1);
 	if (!cheak_player(data, map_info.map_height, map_info.map_width, map))
@@ -64,10 +64,10 @@ int	main(int argc, char **argv)
 	init_map(&map);
 	data.map = &map;
 	parsing(argv[1], &data);
-	mlx_set_setting(MLX_STRETCH_IMAGE, true);
+	// mlx_set_setting(MLX_STRETCH_IMAGE, true);
 	// execution(&data);
-	init_game(&data);
-	mlx_loop(data.mlx);
+	// init_game(&data);
+	// mlx_loop(data.mlx);
 	deallocate_map(&data);
 	cleanup(&data);
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: stalash <stalash@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 17:28:17 by stalash           #+#    #+#             */
-/*   Updated: 2025/04/08 00:01:24 by stalash          ###   ########.fr       */
+/*   Updated: 2025/05/05 19:09:53 by stalash          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,14 +44,16 @@ char	*remove_whitespace(char *line)
 	i = 0;
 	if (line == NULL)
 		return (NULL);
-	len = ft_strlen(line) - 1;
+	len = ft_strlen(line);
+	if (len == 0)
+		return (NULL);
+	len--;
 	while (line[i] && ft_is_whitespace(line[i]))
 		i++;
 	while (len >= i && ft_is_whitespace(line[len]))
 		len--;
-	len++;
-	length = len - i;
-	if (length < 0)
+	length = len - i + 1;
+	if (length <= 0)
 		return (NULL);
 	retrieved_line = ft_strndup(line + i, length);
 	if (retrieved_line == NULL)
@@ -84,6 +86,7 @@ char	*refrctoring_line_for_map(int fd)
 {
 	char	*input;
 	char	*refrctored_line;
+	char	*final_line;
 
 	while (1)
 	{
@@ -91,18 +94,16 @@ char	*refrctoring_line_for_map(int fd)
 		if (!input)
 			return (NULL);
 		refrctored_line = remove_whitespace(input);
+		free(input);
 		if (*refrctored_line == '\0')
 		{
+			free(refrctored_line);
 			printf(RED"Error: Empty line in map."RESET);
-			free(input);
 			exit(1);
 		}
-		if (refrctored_line != input)
-		{
-			refrctored_line = ft_strdup(refrctored_line);
-			free(input);
-		}
-		return (refrctored_line);
+		final_line = ft_strdup(refrctored_line);
+		free(refrctored_line);
+		return (final_line);
 	}
 }
 

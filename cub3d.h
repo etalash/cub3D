@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maba <maba@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: stalash <stalash@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 13:46:41 by stalash           #+#    #+#             */
-/*   Updated: 2025/05/05 02:02:53 by maba             ###   ########.fr       */
+/*   Updated: 2025/05/05 18:42:14 by stalash          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ void				init_map(t_map *map);
 int					cheak_player(t_data data, int map_height, int map_wide,
 						char **map);
 int					flood_fill(t_map_info *map_info, int x, int y);
-int					check_walls(t_data data, int map_height, int map_wide);
+int					check_walls(t_data data, int map_height);
 
 // ************ FREE *****************/
 void				deallocate_map(t_data *data);

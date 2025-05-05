@@ -6,7 +6,7 @@
 /*   By: stalash <stalash@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:36:56 by stalash           #+#    #+#             */
-/*   Updated: 2025/04/08 00:01:13 by stalash          ###   ########.fr       */
+/*   Updated: 2025/05/05 18:29:34 by stalash          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,29 @@ int	valid_map_name(char *argv)
 	return (0);
 }
 
+void	debug(t_data *data)
+{
+	int i = 0, j = 0;
+	printf("Nord: %s\n", data->map->nord);
+	printf("south: %s\n", data->map->south);
+	printf("east: %s\n", data->map->east);
+	printf("west: %s\n", data->map->west);
+	while (i < data->map->m_h)
+	{
+		while (data->map->map_cub[i][j])
+		{
+			printf("%c", data->map->map_cub[i][j]);
+			j++;
+		}
+		j = 0;
+		printf("\n");
+		i++;
+	}
+
+	printf("\n%d\n", data->map->res_h);
+	printf("\n%d\n", data->map->res_w);
+}
+
 void	parsing(char *argv, t_data *data)
 {
 	int		fd;
@@ -76,6 +99,7 @@ void	parsing(char *argv, t_data *data)
 	if (retrieve_map_data(fd, *data, map_colors) != 0)
 		return (deallocate_map(data), close(fd), exit(1));
 	close(fd);
+	debug(data);
 	if (valid_map(*data) == 1)
 		return (deallocate_map(data), exit(1));
 }
