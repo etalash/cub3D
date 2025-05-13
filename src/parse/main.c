@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stalash <stalash@student.42.fr>            +#+  +:+       +#+        */
+/*   By: maba <maba@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 14:04:33 by stalash           #+#    #+#             */
-/*   Updated: 2025/05/05 18:41:15 by stalash          ###   ########.fr       */
+/*   Updated: 2025/05/13 23:54:38 by maba             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	check_contex_map(t_data data, t_map_info map_info, char **map)
 {
-	if (!check_walls(data, map_info.map_height))
+	if (!check_walls(data, map_info.map_height, map_info.map_width))
 		return (printf(RED"ERROR: map is not surrounded by walls\n"RESET), \
 				free_sub_map(map), 1);
 	if (!cheak_player(data, map_info.map_height, map_info.map_width, map))
@@ -26,15 +26,6 @@ int	check_contex_map(t_data data, t_map_info map_info, char **map)
 	return (0);
 }
 
-// void	init_ray(t_data *data)
-// {
-// 	data->ray = malloc(sizeof(t_ray));
-// 	if (!data->ray)
-// 	{
-// 		printf("Error: Failed to allocate memory for data->ray\n");
-// 		exit(1);
-// 	}
-// }
 
 void	init_map(t_map *map)
 {
@@ -64,10 +55,8 @@ int	main(int argc, char **argv)
 	init_map(&map);
 	data.map = &map;
 	parsing(argv[1], &data);
-	// mlx_set_setting(MLX_STRETCH_IMAGE, true);
-	// execution(&data);
-	// init_game(&data);
-	// mlx_loop(data.mlx);
+	mlx_set_setting(MLX_STRETCH_IMAGE, true);
+	execution(&data);
 	deallocate_map(&data);
 	cleanup(&data);
 	return (0);

@@ -1,9 +1,10 @@
-NO asset/texture/NO1.png
-SO asset/texture/SO1.png
-WE asset/texture/WE1.png
-EA asset/texture/EA1.png
-F 220,100,0
-C 225,200,0
+NO asset/texture/imN.png
+SO asset/texture/imS.png
+WE asset/texture/imO.png
+EA asset/texture/imE.png
+F 0,255,127
+C 173,216,230
+
 
 11111111111111111111111111
 10000000001100000000000011

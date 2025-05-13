@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_data.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stalash <stalash@student.42.fr>            +#+  +:+       +#+        */
+/*   By: maba <maba@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 08:18:24 by stalash           #+#    #+#             */
-/*   Updated: 2025/04/07 22:33:06 by stalash          ###   ########.fr       */
+/*   Updated: 2025/05/13 23:40:29 by maba             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,10 @@ int	refrctoring_map_data(t_data data, char *map_colors)
 		j++;
 	}
 	data.map->map_cub[data.map->m_h][j] = '\0';
+	// 💡 Mise à jour de la largeur maximale rencontrée
+	if (j > data.map->m_w)
+		data.map->m_w = j;
+
 	return (0);
 }
 

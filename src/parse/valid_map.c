@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   valid_map.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stalash <stalash@student.42.fr>            +#+  +:+       +#+        */
+/*   By: maba <maba@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 09:53:54 by stalash           #+#    #+#             */
-/*   Updated: 2025/05/05 19:06:31 by stalash          ###   ########.fr       */
+/*   Updated: 2025/05/14 00:15:17 by maba             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,31 +91,57 @@ int is_valid_border(char c)
     return (c == '1' || c == ' ');
 }
 
-int check_walls(t_data data, int map_height)
-{
-    int     i;
-    size_t  len;
-    int     j;
+// int check_walls(t_data data, int map_height)
+// {
+//     int     i;
+//     size_t  len;
+//     int     j;
 
-    i = -1;
-    while (++i < map_height)
-    {
-        len = ft_strlen(data.map->map_cub[i]);
-        if (len == 0)
-            continue;
-        if (i == 0 || i == map_height - 1)
-        {
-            j = -1;
-            while (++j < (int)len)
-                if (!is_valid_border(data.map->map_cub[i][j]))
-                    return (0);
-            continue;
-        }
-        if (!is_valid_border(data.map->map_cub[i][0]) || 
-            !is_valid_border(data.map->map_cub[i][len - 1]))
-            return (0);
-    }
-    return (1);
+//     i = -1;
+//     while (++i < map_height)
+//     {
+//         len = ft_strlen(data.map->map_cub[i]);
+//         if (len == 0)
+//             continue;
+//         if (i == 0 || i == map_height - 1)
+//         {
+//             j = -1;
+//             while (++j < (int)len)
+//                 if (!is_valid_border(data.map->map_cub[i][j]))
+//                     return (0);
+//             continue;
+//         }
+//         if (!is_valid_border(data.map->map_cub[i][0]) || 
+//             !is_valid_border(data.map->map_cub[i][len - 1]))
+//             return (0);
+//     }
+//     return (1);
+// }
+
+int	check_walls(t_data data, int map_height, int map_wide)
+{
+	int	i;
+	int	j;
+
+	i = -1;
+	j = -1;
+	while (++j < map_wide)
+	{
+		if (ft_strlen(data.map->map_cub[0]) > (size_t)j
+			&& (data.map->map_cub[0][j] != '1'
+			|| data.map->map_cub[map_height - 1]
+			[j] != '1'))
+			return (0);
+	}
+	while (++i < map_height)
+	{
+		if (data.map->map_cub[i][0] != '1'
+			|| (ft_strlen(data.map->map_cub[i]) > 0
+			&& data.map->map_cub[i][ft_strlen
+			(data.map->map_cub[i]) - 1] != '1'))
+			return (0);
+	}
+	return (1);
 }
 
 int	valid_map(t_data data)
@@ -143,3 +169,5 @@ int	valid_map(t_data data)
 	free_sub_map(map);
 	return (0);
 }
+
+
