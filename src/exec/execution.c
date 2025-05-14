@@ -119,7 +119,6 @@ void init_player(t_data *data)
 }
 
 
-
 void execution(t_data *data)
 {
     data->mlx = mlx_init(data->map->res_w, data->map->res_h, "Cub3D", false);
