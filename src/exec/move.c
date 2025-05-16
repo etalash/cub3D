@@ -6,7 +6,7 @@
 /*   By: maba <maba@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 12:15:53 by stalash           #+#    #+#             */
-/*   Updated: 2025/05/13 23:06:52 by maba             ###   ########.fr       */
+/*   Updated: 2025/05/16 19:40:02 by maba             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,39 +43,37 @@ void	rotate_player(t_player *player, int rot)
 
 
 
-void	hook(t_data *data, double move_x, double move_y)
-{
-    // Rotation
-    if (data->player->rotation == 1)
-        rotate_player(data->player, 1);
-    if (data->player->rotation == -1)
-        rotate_player(data->player, -1);
 
-    // Mouvements cumulatifs
-    if (data->player->horizontal == 1) // strafe droite
-    {
-        move_x += sin(data->player->angle) * PLAYER_SPEED;
-        move_y += -cos(data->player->angle) * PLAYER_SPEED;
+void hook(t_data *data, double move_x, double move_y) 
+{
+    // Réinitialiser les mouvements à chaque frame
+    move_x = 0;
+    move_y = 0;
+
+    // Rotation
+    if (data->player->rotation != 0)
+        rotate_player(data->player, data->player->rotation);
+
+    // Mouvements (simplifié pour un déplacement plus droit)
+    if (data->player->vertical == 1) { // Avancer
+        move_x = cos(data->player->angle) * PLAYER_SPEED;
+        move_y = sin(data->player->angle) * PLAYER_SPEED;
     }
-    if (data->player->horizontal == -1) // strafe gauche
-    {
-        move_x += -sin(data->player->angle) * PLAYER_SPEED;
-        move_y += cos(data->player->angle) * PLAYER_SPEED;
+    if (data->player->vertical == -1) { // Reculer
+        move_x = -cos(data->player->angle) * PLAYER_SPEED;
+        move_y = -sin(data->player->angle) * PLAYER_SPEED;
     }
-    if (data->player->vertical == 1) // avancer
-    {
-        move_x += cos(data->player->angle) * PLAYER_SPEED;
-        move_y += sin(data->player->angle) * PLAYER_SPEED;
+    if (data->player->horizontal == -1) { // Strafe gauche
+        move_x = -sin(data->player->angle) * PLAYER_SPEED;
+        move_y = cos(data->player->angle) * PLAYER_SPEED;
     }
-    if (data->player->vertical == -1) // reculer
-    {
-        move_x += -cos(data->player->angle) * PLAYER_SPEED;
-        move_y += -sin(data->player->angle) * PLAYER_SPEED;
+    if (data->player->horizontal == 1) { // Strafe droite
+        move_x = sin(data->player->angle) * PLAYER_SPEED;
+        move_y = -cos(data->player->angle) * PLAYER_SPEED;
     }
 
     move_player(data, move_x, move_y);
 }
-
 
 void	key_release(mlx_key_data_t key_data, t_data *data)
 {

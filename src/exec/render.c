@@ -6,7 +6,7 @@
 /*   By: maba <maba@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 03:48:31 by maba              #+#    #+#             */
-/*   Updated: 2025/05/13 23:22:21 by maba             ###   ########.fr       */
+/*   Updated: 2025/05/16 19:13:50 by maba             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,9 @@ void	define_texture_values(t_data *data, t_ray *ray, \
 		*wall_x = data->player->pos_x + ray->perp_wall_dist * ray->dir_x;
 	
 	*wall_x -= floor(*wall_x);
+	// Assurez-vous que wall_x est entre 0 et 1
+    if (*wall_x < 0) *wall_x = 0;
+    if (*wall_x >= 1) *wall_x = 0.999;
 }
 
 
