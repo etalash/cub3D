@@ -6,24 +6,42 @@
 /*   By: maba <maba@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 12:15:53 by stalash           #+#    #+#             */
-/*   Updated: 2025/05/16 19:40:02 by maba             ###   ########.fr       */
+/*   Updated: 2025/05/16 23:21:53 by maba             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../cub3d.h"
 
 
-void	move_player(t_data *data, double move_x, double move_y)
+// void	move_player(t_data *data, double move_x, double move_y)
+// {
+// 	double	next_x = data->player->pos_x + move_x;
+// 	double	next_y = data->player->pos_y + move_y;
+
+// 	if (data->map->map_cub[(int)data->player->pos_y][(int)next_x] != '1')
+// 		data->player->pos_x = next_x;
+// 	if (data->map->map_cub[(int)next_y][(int)data->player->pos_x] != '1')
+// 		data->player->pos_y = next_y;
+// }
+
+void move_player(t_data *data, double move_x, double move_y)
 {
-	double	next_x = data->player->pos_x + move_x;
-	double	next_y = data->player->pos_y + move_y;
-
-	if (data->map->map_cub[(int)data->player->pos_y][(int)next_x] != '1')
-		data->player->pos_x = next_x;
-	if (data->map->map_cub[(int)next_y][(int)data->player->pos_x] != '1')
-		data->player->pos_y = next_y;
+    double new_x = data->player->pos_x + move_x;
+    double new_y = data->player->pos_y + move_y;
+    
+    // Padding de 0.02
+    double padding = 0.02;
+    
+    // Vérifie les 4 coins autour du joueur
+    if (data->map->map_cub[(int)(new_y - padding)][(int)(new_x - padding)] != '1' &&
+        data->map->map_cub[(int)(new_y - padding)][(int)(new_x + padding)] != '1' &&
+        data->map->map_cub[(int)(new_y + padding)][(int)(new_x - padding)] != '1' &&
+        data->map->map_cub[(int)(new_y + padding)][(int)(new_x + padding)] != '1')
+    {
+        data->player->pos_x = new_x;
+        data->player->pos_y = new_y;
+    }
 }
-
 
 void	rotate_player(t_player *player, int rot)
 {
@@ -75,6 +93,7 @@ void hook(t_data *data, double move_x, double move_y)
     move_player(data, move_x, move_y);
 }
 
+
 void	key_release(mlx_key_data_t key_data, t_data *data)
 {
 	if (key_data.key == MLX_KEY_RIGHT && key_data.action == MLX_RELEASE)
@@ -90,6 +109,7 @@ void	key_release(mlx_key_data_t key_data, t_data *data)
 	else if (key_data.key == MLX_KEY_S && key_data.action == MLX_RELEASE)
 		data->player->vertical = 0;
 }
+
 
 void	key_hook(mlx_key_data_t key_data, void *pointer)
 {

@@ -6,7 +6,7 @@
 /*   By: maba <maba@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 14:04:33 by stalash           #+#    #+#             */
-/*   Updated: 2025/05/13 23:54:38 by maba             ###   ########.fr       */
+/*   Updated: 2025/05/16 21:20:40 by maba             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	check_contex_map(t_data data, t_map_info map_info, char **map)
 
 void	init_map(t_map *map)
 {
-	map->nord = NULL;
+	map->north = NULL;
 	map->south = NULL;
 	map->east = NULL;
 	map->west = NULL;

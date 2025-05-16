@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stalash <stalash@student.42.fr>            +#+  +:+       +#+        */
+/*   By: maba <maba@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 18:17:01 by stalash           #+#    #+#             */
-/*   Updated: 2025/05/05 16:55:38 by stalash          ###   ########.fr       */
+/*   Updated: 2025/05/16 21:21:06 by maba             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,11 +42,11 @@ void	deallocate_map(t_data *data)
 		free(data->map->map_cub);
 		data->map->map_cub = NULL;
 	}
-	free(data->map->nord);
+	free(data->map->north);
 	free(data->map->south);
 	free(data->map->east);
 	free(data->map->west);
-	data->map->nord = NULL;
+	data->map->north = NULL;
 	data->map->south = NULL;
 	data->map->east = NULL;
 	data->map->west = NULL;

@@ -6,7 +6,7 @@
 /*   By: maba <maba@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 13:46:41 by stalash           #+#    #+#             */
-/*   Updated: 2025/05/14 00:20:00 by maba             ###   ########.fr       */
+/*   Updated: 2025/05/16 22:05:32 by maba             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,9 @@
 # define RES_X 1600
 # define RES_Y 1200
 # define MAP_HEIGHT_F 33
-# define FOV_RD 50
-# define ROTATION_SPEED 1.7
-# define PLAYER_SPEED 0.12
-
+# define FOV_RD 60
+# define ROTATION_SPEED 2
+# define PLAYER_SPEED 0.15
 
 
 typedef struct s_table
@@ -63,7 +62,7 @@ typedef struct s_player
 
 typedef struct s_map
 {
-	char			*nord;
+	char			*north;
 	char			*south;
 	char			*east;
 	char			*west;

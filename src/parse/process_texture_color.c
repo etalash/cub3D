@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   process_texture_color.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stalash <stalash@student.42.fr>            +#+  +:+       +#+        */
+/*   By: maba <maba@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 17:29:41 by stalash           #+#    #+#             */
-/*   Updated: 2025/04/07 20:19:50 by stalash          ###   ########.fr       */
+/*   Updated: 2025/05/16 21:21:28 by maba             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ int	process_texture_line(char *line, t_data data, int *found)
 {
 	if ((strncmp(line, "NO ", 3) == 0) && !found[0])
 	{
-		data.map->nord = ft_strdup(line + 3);
+		data.map->north= ft_strdup(line + 3);
 		found[0] = 1;
 		return (0);
 	}

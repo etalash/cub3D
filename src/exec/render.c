@@ -6,7 +6,7 @@
 /*   By: maba <maba@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 03:48:31 by maba              #+#    #+#             */
-/*   Updated: 2025/05/16 19:13:50 by maba             ###   ########.fr       */
+/*   Updated: 2025/05/16 23:55:58 by maba             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,11 +74,11 @@ void	draw_walls(t_data *data, t_ray *ray, int x)
 	define_texture_values(data, ray, &texture, &wall_x);
 	
 	// Vérification si la texture est NULL
-    if (!texture)
-    {
-        fprintf(stderr, "Error: Texture is NULL\n");
-        return;
-    }
+    // if (!texture)
+    // {
+    //     fprintf(stderr, "Error: Texture is NULL\n");
+    //     return;
+    // }
 	tex.x = (int)(wall_x * texture->width);
 	if (tex.x < 0)
     	tex.x = 0;

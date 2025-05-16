@@ -6,7 +6,7 @@
 /*   By: maba <maba@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 18:33:38 by stalash           #+#    #+#             */
-/*   Updated: 2025/05/13 23:25:10 by maba             ###   ########.fr       */
+/*   Updated: 2025/05/16 23:29:34 by maba             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void exit_error(t_data *data, const char *msg)
 
 int	init_texture(t_data *dt)
 {
-	dt->north = mlx_load_png(dt->map->nord);
+	dt->north = mlx_load_png(dt->map->north);
 	if (!dt->north)
 		return (ft_printf("Error loading north texture\n"), 1);
 	dt->south = mlx_load_png(dt->map->south);
@@ -100,7 +100,7 @@ void init_player(t_data *data)
 
 
    // Position initiale (centre de la case)
-    data->player->pos_x = data->map->p_x + 0.5; // Position en cases, pas en pixels
+    data->player->pos_x = data->map->p_x + 0.5;
     data->player->pos_y = data->map->p_y + 0.5;
     
     // Initialisation du champ de vision
